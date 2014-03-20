@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+teams = %w{Core Web Editorial Institutions Ops Design Product Founder}.concat(['Partner Engineering'])
+teams.each { |name| Group.create(name: name)}

@@ -32,8 +32,14 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :development do
+  gem 'annotated-rails'
+end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'protected_attributes'
+gem 'devise'
+gem 'whenever'
 
 # Use unicorn as the app server
 # gem 'unicorn'
