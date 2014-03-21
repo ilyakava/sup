@@ -39,7 +39,7 @@ end
 # gem 'bcrypt', '~> 3.1.7'
 gem 'protected_attributes'
 gem 'devise'
-gem 'whenever'
+gem 'whenever', :require => false
 
 # Use unicorn as the app server
 # gem 'unicorn'

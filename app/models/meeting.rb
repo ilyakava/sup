@@ -25,8 +25,28 @@ class Meeting < ActiveRecord::Base
         meeting_member_ids << pair.first
         forbidden_member_ids << pair.last[:edges]
       end
-      Meeting.create(member_ids: meeting_member_ids)
+      Meeting.create(member_ids: meeting_member_ids, meeting_date: self.choose_date(meeting_member_ids))
     end
+  end
+
+  def self.trigger_weekly_email
+    time_range = (3.days.ago..Time.now)
+    Meeting.where(created_at: time_range).each do |meeting|
+      MemberMailer.new_meeting(meeting).deliver
+    end
+  end
+
+  def self.trigger_weekly_debug_email
+    time_range = (3.days.ago..Time.now)
+    Meeting.where(created_at: time_range).each do |meeting|
+      MemberMailer.new_meeting(meeting).deliver
+    end
+  end
+
+  # TODO check calendars of members
+  def self.choose_date(member_ids)
+    nearest_monday = Date.commercial(Date.today.year, 1+Date.today.cweek, 1)
+    nearest_monday + rand(6).days
   end
 
   # mutates ranks!
