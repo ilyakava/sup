@@ -1,0 +1,15 @@
+<h1>Listing members</h1>
+
+<%= link_to "Add a new email", action: "new" %>
+
+<table>
+  <tr>
+    <th>email</th>
+  </tr>
+
+  <% @members.each do |member| %>
+    <tr>
+      <td><%= member.email %></td>
+    </tr>
+  <% end %>
+</table>

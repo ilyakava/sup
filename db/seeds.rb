@@ -8,3 +8,6 @@
 
 teams = %w{Core Web Editorial Institutions Ops Design Product Founder}.concat(['Partner Engineering'])
 teams.each { |name| Group.create(name: name)}
+
+members = %w{Alex Annie Ben Bethina Brennan Alessandra Alexander}
+members.each { |name| Member.create(name: name, email: "#{name}@artsymail.com")}
