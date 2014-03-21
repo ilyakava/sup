@@ -11,6 +11,7 @@ class Meeting < ActiveRecord::Base
   # pick second by rank that isn't connected to first
   # pick third by rank that isn't connected to either first or second
   def self.schedule_all
+    exit_flag = false # talk about laziness
     ranks = Hash[Member.all.map do |member|
       edge_ids = member.edge_ids
       [member.id, {edges: edge_ids, num_edges: edge_ids.count}]
@@ -21,10 +22,13 @@ class Meeting < ActiveRecord::Base
       forbidden_member_ids = []
       until meeting_member_ids.length == 3
         pair = self.delete_max_rank(forbidden_member_ids, ranks)
-        next if pair.nil?
+        # at this point it is impossible to create any more triplets
+        exit_flag = true if pair.nil?
+        break if exit_flag
         meeting_member_ids << pair.first
         forbidden_member_ids.concat(pair.last[:edges])
       end
+      break if exit_flag
       Meeting.create(member_ids: meeting_member_ids, meeting_date: self.choose_date(meeting_member_ids))
     end
   end
@@ -46,7 +50,7 @@ class Meeting < ActiveRecord::Base
   # TODO check calendars of members
   def self.choose_date(member_ids)
     nearest_monday = Date.commercial(Date.today.year, 1+Date.today.cweek, 1)
-    nearest_monday + rand(6).days
+    return nearest_monday + rand(6).days
   end
 
   # mutates ranks!
@@ -55,6 +59,7 @@ class Meeting < ActiveRecord::Base
     restricted_ids_arr.each { |r_id| rem_ranks_copy.delete(r_id) }
 
     if rem_ranks_copy.empty?
+      # if this happens then there are no more valid triplets in the rem_ranks
       nil
     else
       p_id, p_h = rem_ranks_copy.max_by do |id, h|
