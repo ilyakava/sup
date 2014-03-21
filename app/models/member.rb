@@ -18,9 +18,13 @@ class Member < ActiveRecord::Base
   accepts_nested_attributes_for :groups
 
   def edges
-    met_members = self.meetings.members.map(&:email)
-    group_members = self.groups.members.map(&:email)
+    met_members = meetings.map(&:members).flatten.map(&:email)
+    group_members = fellow_members.map(&:email)
     met_members.concat(group_members).uniq
+  end
+
+  def fellow_members
+    groups.map(&:members).flatten - [self]
   end
 end
 #--

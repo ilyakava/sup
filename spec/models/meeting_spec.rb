@@ -13,7 +13,9 @@ describe "meeting scheduling" do
     end
 
     it "succeeds" do
-      
+      Meeting.schedule_all
+      expect(Meeting.first.members).to eq(Member.all)
+      expect(Meeting.count).to eq(1)
     end
   end
 end

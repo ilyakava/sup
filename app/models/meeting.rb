@@ -20,7 +20,7 @@ class Meeting < ActiveRecord::Base
       meeting_member_ids = []
       forbidden_member_ids = []
       until meeting_member_ids.length == 3
-        pair = delete_max_rank(forbidden_member_ids, ranks)
+        pair = self.delete_max_rank(forbidden_member_ids, ranks)
         next if pair.nil?
         meeting_member_ids << pair.first
         forbidden_member_ids << pair.last[:edges]
@@ -50,7 +50,7 @@ class Meeting < ActiveRecord::Base
   end
 
   # mutates ranks!
-  def delete_max_rank(restricted_ids_arr, rem_ranks)
+  def self.delete_max_rank(restricted_ids_arr, rem_ranks)
     rem_ranks_copy = rem_ranks.dup
     restricted_ids_arr.each { |r_id| rem_ranks_copy.delete(r_id) }
 
