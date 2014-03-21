@@ -1,7 +1,11 @@
+<h2 class="edit-title"><%= @member.email %></h2>
+
 <form action="<%= member_path(@member) %>" method="post">
 	<input type="hidden" name="_method" value="put" />
 	<%= render partial: "edit_form", locals: {member: @member} %>
 </form>
 
+<div class="white-button">
 <%= button_to "Remove User", { action: "destroy", id: @member.id },
-                                method: :delete, data: { confirm: "Are you sure?" } %>
+                                method: :delete, data: { confirm: "Are you sure you want to delete #{@member.email} from S'UP? Their tally count of meetings with other team members will be deleted too." } %>
+</div>

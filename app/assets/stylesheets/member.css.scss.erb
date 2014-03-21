@@ -1,6 +1,8 @@
 // Place all the styles related to the member controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Reset Css
 h1, div, span, a, body {
 	text-decoration: none;
 	margin: 0;
@@ -8,10 +10,16 @@ h1, div, span, a, body {
 	list-style: none;
 	border: none;
 }
+*:focus {
+	outline: 0;
+}
+// end of reset css
 
 $serif: "adobe-garamond-pro";
 $sans-serif: "AvantGardeGothicITCW01D 731075","Helvetica Neue",Arial,Helvetica,sans-serif;
 $gray: #e5e5e5;
+$dark-gray: #aaa;
+$purple: #6a0bc1;
 $chevron-right: url(<%= asset_path 'chevron_right.png' %>);
 
 @mixin clearfix {
@@ -41,8 +49,14 @@ body {
 		font-size: 27px;
 	}
 
+	h2.edit-title {
+		font-size: 18px;
+		font-weight: 100;
+		margin: 10px;
+	}
+
 	div.black-button {
-		a {
+		a, input {
 			width: 100%;
 			padding: 15px 0px;
 			display: block;
@@ -52,12 +66,67 @@ body {
 			text-transform: uppercase;
 			@include sans-serif;
 			border: 2px solid black;
+			margin: 10px 0;
 		}
 
-		a:hover {
+		a:hover, input:hover {
+			background-color: $purple;
+			color: white;
+			border: 2px solid black;
+		}
+	}
+
+	div.white-button {
+		a, input {
+			width: 100%;
+			padding: 15px 0px;
+			display: block;
 			background-color: white;
 			color: black;
+			text-align: center;
+			text-transform: uppercase;
+			@include sans-serif;
 			border: 2px solid black;
+			margin: 10px 0;
+		}
+
+		a:hover, input:hover {
+			background-color: $purple;
+			color: white;
+			border: 2px solid black;
+		}
+	}
+
+	.input-box-container {
+		padding: 10px;
+		border-top: solid 1px $gray;
+		font-size: 15px;
+		.input-box {
+			label {
+				padding-right: 10px;
+				font-weight: 600;
+			}
+			input {
+				border: solid 1px $gray;
+				padding: 5px 10px;
+				font-family: $serif;
+				font-weight: 100;
+				font-size: 15px;
+			}
+		}
+	}
+
+	.check-box-container {
+		padding: 10px;
+		border-top: solid 1px $gray;
+		border-bottom: solid 1px $gray;
+		margin-bottom: 10px;
+		.check-box {
+			margin: 5px 0px;
+			label {
+				letter-spacing: 1px;
+				font-size: 16px;
+			}
 		}
 	}
 
