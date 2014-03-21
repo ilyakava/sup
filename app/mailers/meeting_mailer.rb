@@ -1,7 +1,9 @@
 class MeetingMailer < ActionMailer::Base
-  default from: "sup@artsymail.com"
+  default from: 'sup@artsymail.com'
 
-  def welcome_email(member)
-    @member = member
-    mail(to: @member.email, subject: "Welcome to S'UP at Artsy")
+  def new_meeting(members, times)
+    @members = members
+    @times = times
+    mail(to: @members.map(&:email), subject: "S'up with #{@members[0]}, #{@members[1]}, and #{@members[2]}?")
+  end
 end

@@ -8,8 +8,20 @@ class MembersController < ApplicationController
   end
 
   def create
-    @member = Member.create(member_params)
-    redirect_to root_path
+    @member = Member.new(member_params)
+
+    respond_to do |format|
+      if @member.save
+        # Tell the UserMailer to send a welcome Email after save
+        MemberMailer.welcome_email(@member).deliver
+
+        format.html { redirect_to(root_path, notice: 'Member was successfully created.') }
+        format.json { render json: @member, status: :created, location: @member }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @member.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit

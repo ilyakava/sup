@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>S'UP at Artsy these days with <%= "#{@members[0]}, #{@members[1]}, and #{@members[2]}?" %></h1>
+    <p>
+      <%= @times.first.strftime("%A, %B %d") %> looks free on your calendars - take a quick 20 min to fill each-other in on something you're focused on these days.
+    </p>
+
+    <p class="signature">Team love,
+      <br>
+      Artsy
+    </p>
+
+    <p class="ps">
+      <%= @members.sample %>, you're in charge this week to make it happen!
+    </p>
+  </body>
+</html>
