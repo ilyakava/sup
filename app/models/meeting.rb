@@ -14,7 +14,8 @@ class Meeting < ActiveRecord::Base
     exit_flag = false # talk about laziness
     ranks = Hash[Member.all.map do |member|
       edge_ids = member.edge_ids
-      [member.id, {edges: edge_ids, num_edges: edge_ids.count}]
+      advantage = member.left_out ? 100 : 0
+      [member.id, {edges: edge_ids, num_edges: edge_ids.count + advantage}]
     end]
 
     until ranks.empty?
@@ -23,7 +24,10 @@ class Meeting < ActiveRecord::Base
       until meeting_member_ids.length == 3
         pair = self.delete_max_rank(forbidden_member_ids, ranks)
         # at this point it is impossible to create any more triplets
-        exit_flag = true if pair.nil?
+        if pair.nil?
+          exit_flag = true
+          ranks.keys.each { |member_id| Member.find(member_id).update_attribute(:left_out, true) }
+        end
         break if exit_flag
         meeting_member_ids << pair.first
         forbidden_member_ids.concat(pair.last[:edges])
