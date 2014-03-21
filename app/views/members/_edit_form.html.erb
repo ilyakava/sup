@@ -1,3 +1,15 @@
+<% if member.errors.any? %>
+  <div id="error_explanation">
+    <h3><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h3>
+ 
+    <ul class="error-list">
+    <% member.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="input-box-container">
   <div class="input-box">
     <label>Name</label>

@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 // Reset Css
-h1, div, span, a, body {
+h1, div, span, a, body, li, ul {
 	text-decoration: none;
 	margin: 0;
 	padding: 0;
@@ -41,6 +41,14 @@ body {
 	width: 900px;
 	padding: 40px 0px;
 	margin: auto;
+
+	div#error_explanation {
+		margin-left: 10px;
+		ul.error-list {
+			margin-bottom: 25px;
+			color: $purple;
+		}
+	}
 
 	h1#logo {
 		font-family: $serif;

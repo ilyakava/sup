@@ -14,6 +14,11 @@ class Member < ActiveRecord::Base
   has_many :meeting_members
   has_many :meetings, through: :meeting_members
 
+  validates_presence_of :groups
+  validates_presence_of :name
+  validates_presence_of :email
+  validates_format_of :email, :with => /@artsy|@art\.sy/
+
   attr_accessible :name, :email, :group_ids, :left_out
   accepts_nested_attributes_for :groups
 
