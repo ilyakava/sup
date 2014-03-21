@@ -1,0 +1,87 @@
+// Place all the styles related to the member controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+h1, div, span, a, body {
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: none;
+}
+
+$serif: "adobe-garamond-pro";
+$sans-serif: "AvantGardeGothicITCW01D 731075","Helvetica Neue",Arial,Helvetica,sans-serif;
+$gray: #e5e5e5;
+$chevron-right: url(<%= asset_path 'chevron_right.png' %>);
+
+@mixin clearfix {
+	display: table;
+	content: ".";
+	clear: both;
+}
+
+@mixin sans-serif {
+	font-family: $sans-serif;
+	font-weight: 500;
+	letter-spacing: 2px;
+}
+
+body {
+	width: 900px;
+	padding: 40px 0px;
+	margin: auto;
+
+	h1#logo {
+		font-family: $serif;
+		span#app-name {
+			font-family: $sans-serif;
+			font-size: 40px;
+		}
+		padding-bottom: 20px;
+		font-size: 27px;
+	}
+
+	div.black-button {
+		a {
+			width: 100%;
+			padding: 15px 0px;
+			display: block;
+			background-color: black;
+			color: white;
+			text-align: center;
+			text-transform: uppercase;
+			@include sans-serif;
+			border: 2px solid black;
+		}
+
+		a:hover {
+			background-color: white;
+			color: black;
+			border: 2px solid black;
+		}
+	}
+
+	table {
+		margin-top: 20px;
+		width: 100%;
+		tr.member-list-item:hover {
+			background-color: $gray;
+		}
+		tr.member-list-item {
+			width: 98%;
+			display: block;
+			border-top: 2px solid $gray;
+			padding: 10px;
+			@include clearfix;
+			font-weight: 600;
+
+
+			td.edit-arrow > a {
+				float: right;
+				width: 19px;
+				height: 33px;
+				background-image: $chevron-right;
+			}
+		}
+	}
+}
