@@ -23,6 +23,12 @@ class Member < ActiveRecord::Base
     met_members.concat(group_members).uniq
   end
 
+  def edge_ids
+    met_members = meetings.map(&:members).flatten.map(&:id)
+    group_members = fellow_members.map(&:id)
+    met_members.concat(group_members).uniq
+  end
+
   def fellow_members
     groups.map(&:members).flatten - [self]
   end

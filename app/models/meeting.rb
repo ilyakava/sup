@@ -12,8 +12,8 @@ class Meeting < ActiveRecord::Base
   # pick third by rank that isn't connected to either first or second
   def self.schedule_all
     ranks = Hash[Member.all.map do |member|
-      edges = member.edges
-      [member.id, {edges: edges, num_edges: edges.count}]
+      edge_ids = member.edge_ids
+      [member.id, {edges: edge_ids, num_edges: edge_ids.count}]
     end]
 
     until ranks.empty?
@@ -23,7 +23,7 @@ class Meeting < ActiveRecord::Base
         pair = self.delete_max_rank(forbidden_member_ids, ranks)
         next if pair.nil?
         meeting_member_ids << pair.first
-        forbidden_member_ids << pair.last[:edges]
+        forbidden_member_ids.concat(pair.last[:edges])
       end
       Meeting.create(member_ids: meeting_member_ids, meeting_date: self.choose_date(meeting_member_ids))
     end
