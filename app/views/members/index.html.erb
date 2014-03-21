@@ -5,11 +5,13 @@
 <table>
   <tr>
     <th>email</th>
+    <th>edit</th>
   </tr>
 
   <% @members.each do |member| %>
     <tr>
       <td><%= member.email %></td>
+      <td><%= link_to "Edit", action: "edit", id: member %></td>
     </tr>
   <% end %>
 </table>

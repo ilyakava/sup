@@ -12,6 +12,22 @@ class MembersController < ApplicationController
     redirect_to root_path
   end
 
+  def edit
+    @member = Member.find(params[:id])
+  end
+
+  def update
+    @member = Member.find(params[:id])
+    @member.update_attributes(params[:member])
+    redirect_to root_path
+  end
+
+  def destroy
+    @member = Member.find(params[:id])
+    @member.destroy!
+    redirect_to root_path
+  end
+
   private
 
   def member_params

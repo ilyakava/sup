@@ -1,1 +1,3 @@
-<%= render partial: "edit_form", locals: {member: @member} %>
+<form action="<%= members_url %>" method="post">
+	<%= render partial: "edit_form", locals: {member: @member} %>
+</form>

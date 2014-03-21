@@ -1,0 +1,7 @@
+<form action="<%= member_path(@member) %>" method="post">
+	<input type="hidden" name="_method" value="put" />
+	<%= render partial: "edit_form", locals: {member: @member} %>
+</form>
+
+<%= button_to "Remove User", { action: "destroy", id: @member.id },
+                                method: :delete, data: { confirm: "Are you sure?" } %>
