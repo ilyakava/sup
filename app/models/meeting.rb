@@ -2,7 +2,7 @@ class Meeting < ActiveRecord::Base
   has_many :meeting_members
   has_many :members, through: :meeting_members
 
-  attr_accessible :member_ids
+  attr_accessible :member_ids, :meeting_date
   accepts_nested_attributes_for :members
 
   # put everyone in a group, draw connections as edges
@@ -40,14 +40,14 @@ class Meeting < ActiveRecord::Base
   def self.trigger_weekly_email
     time_range = (3.days.ago..Time.now)
     Meeting.where(created_at: time_range).each do |meeting|
-      MemberMailer.new_meeting(meeting).deliver
+      MeetingMailer.new_meeting(meeting).deliver
     end
   end
 
   def self.trigger_weekly_debug_email
     time_range = (3.days.ago..Time.now)
     Meeting.where(created_at: time_range).each do |meeting|
-      MemberMailer.new_meeting(meeting).deliver
+      MeetingMailer.new_meeting_debug(meeting).deliver
     end
   end
 
