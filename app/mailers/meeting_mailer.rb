@@ -10,6 +10,8 @@ class MeetingMailer < ActionMailer::Base
   def new_meeting_debug(meeting)
     @members = meeting.members
     @times = meeting.meeting_date
-    mail(to: "ilya@artsymail.com", subject: "[SUP DEBUG] S'up with #{@members[0]}, #{@members[1]}, and #{@members[2]}?")
+    mail(to: "ilya@artsymail.com",
+      subject: "[SUP DEBUG] S'up with #{@members[0]}, #{@members[1]}, and #{@members[2]}?",
+      template_name: 'new_meeting')
   end
 end
