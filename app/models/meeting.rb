@@ -54,7 +54,7 @@ class Meeting < ActiveRecord::Base
   # TODO check calendars of members
   def self.choose_date(member_ids)
     nearest_monday = Date.commercial(Date.today.year, 1+Date.today.cweek, 1)
-    return nearest_monday + rand(6).days
+    return nearest_monday + rand(5).days
   end
 
   # mutates ranks!
