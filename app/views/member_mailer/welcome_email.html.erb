@@ -2,7 +2,24 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-    <%= stylesheet_link_tag asset_path("emails") %>
+    <style type="text/css">
+      body#welcome h1, body#meeting h1 {
+        font-family: 'times new roman', serif;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0px; }
+      body#welcome p, body#meeting p {
+        margin: 15px 0px; }
+      body#welcome div.section-title, body#welcome strong, body#meeting div.section-title, body#meeting strong {
+        font-family: arial, sans-serif;
+        font-size: 13px;
+        font-weight: bold; }
+      body#welcome div.post-script, body#meeting div.post-script {
+        color: #999999;
+        margin-top: 40px; }
+      body#welcome div.post-script ul, body#meeting div.post-script ul {
+        margin-top: 10px; }
+    </style>
   </head>
   <body id="welcome">
     <h1>Welcome to S'UP at Artsy, <%= @member.name %></h1>
