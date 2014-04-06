@@ -2,12 +2,33 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <%= stylesheet_link_tag "welcome_email" %>
   </head>
-  <body>
+  <body id="welcome">
     <h1>Welcome to S'UP at Artsy, <%= @member.name %></h1>
     <p>
-      You'll hear about each week's S'UP every Sunday by email.
+      You're now a part of Artsy's weekly casual cross-team three-person-group stand-up.
     </p>
-    <p>Thanks for joining and see you soon!</p>
+    <div class="section-title">----</div>
+    <div class="section-title">What's S'UP?</div>
+    <p>
+      S'UP is an easy way to stay up-to-date with what's going on at Artsy outside of your own projects. It's also a great way to chat with folks on the team you might not get a chance to interact with on a daily basis. Once a week, 20 minutes, at your convenience.
+    </p>
+    <div class="section-title">----</div>
+    <div class="section-title">What's Next?</div>
+    <ol>
+      <li>Look out for an email each Sunday with two other folds at Artsy on different teams than your own.</li>
+      <li>Together, choose an open time on your calendars to meet that week for 20 minutes.</li>
+      <li>Get together and go around briefly talking about one thing you're focused on these days.</li>
+    </ol>
+    <div class="post-script">
+      <p>What you'd like to discuss, and how you would like to show/describe it is up to you. Some helpful tips to discussing a project with 2 people who may not have full context:</p>
+      <ul>
+        <li>What is it?</li>
+        <li>Why is it relevant, interesting, or beneficial to Artsy?</li>
+        <li>What's been challenging about it (or an anticipated challenge)?</li>
+        <li>What would you consider a successful outcome for it?</li>
+      </ul>
+    </div>
   </body>
 </html>

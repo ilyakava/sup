@@ -1,0 +1,23 @@
+body#welcome {
+	h1 {
+		font-family: 'times new roman', serif;
+		font-size: 28px;
+		font-weight: bold;
+		margin: 20px 0px;
+	}
+	p {
+		margin: 15px 0px;
+	}
+	div.section-title {
+		font-family: arial, sans-serif;
+		font-size: 13px;
+		font-weight: bold;
+	}
+	div.post-script {
+		color: rgb(153, 153, 153);
+		margin-top: 40px;
+		ul {
+			margin-top: 10px;
+		}
+	}
+}
