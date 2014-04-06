@@ -5,6 +5,12 @@ class Meeting < ActiveRecord::Base
   attr_accessible :member_ids, :meeting_date
   accepts_nested_attributes_for :members
 
+  before_save :mark_members_not_left_out
+
+  def mark_members_not_left_out
+    members.each { |m| m.update_attribute(:left_out, false) }
+  end
+
   # put everyone in a group, draw connections as edges
   # rank by edges
   # pick first by rank
@@ -23,10 +29,11 @@ class Meeting < ActiveRecord::Base
       forbidden_member_ids = []
       until meeting_member_ids.length == 3
         pair = self.delete_max_rank(forbidden_member_ids, ranks)
-        # at this point it is impossible to create any more triplets
         if pair.nil?
+          # at this point it is impossible to create any more triplets
           exit_flag = true
-          ranks.keys.each { |member_id| Member.find(member_id).update_attribute(:left_out, true) }
+          # meeting_member_ids will be partially populated at this point
+          [*ranks.keys, *meeting_member_ids].each { |member_id| Member.find(member_id).update_attribute(:left_out, true) }
         end
         break if exit_flag
         meeting_member_ids << pair.first
