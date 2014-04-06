@@ -1,4 +1,4 @@
-body#welcome {
+body#welcome, body#meeting {
 	h1 {
 		font-family: 'times new roman', serif;
 		font-size: 28px;
@@ -8,7 +8,7 @@ body#welcome {
 	p {
 		margin: 15px 0px;
 	}
-	div.section-title {
+	div.section-title, strong {
 		font-family: arial, sans-serif;
 		font-size: 13px;
 		font-weight: bold;

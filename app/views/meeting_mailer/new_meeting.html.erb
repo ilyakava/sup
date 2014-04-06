@@ -2,14 +2,15 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <%= stylesheet_link_tag "emails" %>
   </head>
-  <body>
-    <h2>S'UP at Artsy these days with <%= "#{@members[0]}, #{@members[1]}, and #{@members[2]}?" %></h2>
+  <body id="meeting">
+    <h1>S'UP at Artsy these days with <%= "#{@members[0]}, #{@members[1]}, and #{@members[2]}?" %></h1>
     <p>
-      Find a time that works on <%= @times.first.strftime("%A, %B %d") %> or another day this week, and put a quick 20-min break on the calendar. Then get together and fill each other in on something you're focused on these days.
+      Find a time that works between now and Friday, and put a quick 20-min break on the calendar. Then get together and fill each other in on something you're focused on these days.
     </p>
-    <p class="ps">
-      <em><%= @members.sample %></em>, you're in charge this week to make it happen!
+    <p>
+      How about <%= @times.first.strftime("%A, %B %d") %>? <strong><%= @members.sample %>, you're in charge this week to make it happen!</strong>
     </p>
 
     <p class="signature">Team love,
