@@ -1,3 +1,6 @@
+// this is compiled manually at the cmd line and inserted into the head tag
+// of the two emails. Would be nice if a stlyesheet could be required successfuly,
+// but premailer complains endlessly
 body#welcome, body#meeting {
 	h1 {
 		font-family: 'times new roman', serif;
