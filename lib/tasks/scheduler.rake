@@ -1,5 +1,5 @@
 desc "schedule all meetings for the week"
-task :update_feed => :environment do
+task :schedule_meetings => :environment do
   puts "Scheduling meetings..."
   Meeting.schedule_all
   puts "Done Scheduling meetings."
