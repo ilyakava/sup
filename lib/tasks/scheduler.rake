@@ -9,7 +9,7 @@ end
 
 desc "mail all meetings for the week to admin for debug checking"
 task :trigger_weekly_debug_email => :environment do
-  Time.now.saturday?
+  if Time.now.saturday?
     puts "Sending weekly debug email..."
     Meeting.trigger_weekly_debug_email
     puts "Done sending weekly debug email..."
@@ -18,7 +18,7 @@ end
 
 desc "mail all meetings for the week to meeting members"
 task :trigger_weekly_email => :environment do
-  Time.now.sunday?
+  if Time.now.sunday?
     puts "Sending weekly email..."
     Meeting.trigger_weekly_email
     puts "Done sending weekly email..."
