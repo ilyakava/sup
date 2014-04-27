@@ -77,11 +77,11 @@ class Meeting < ActiveRecord::Base
     else
       p_id, p_h = rem_ranks_copy.max_by do |id, h|
         if restricted_ids_arr.include?(id)
-          next
+          -Float::INFINITY
         elsif num_paired == 1 && ([Member.count, (Member.count - 1)].include?((h[:edges] + restricted_ids_arr).uniq.length))
           # collectively, the restricted ids should not account
           # for everyone if this is the 2nd person in the triplet
-          next
+          -Float::INFINITY
         else
           h[:num_edges]
         end
