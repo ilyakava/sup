@@ -28,7 +28,7 @@ class Meeting < ActiveRecord::Base
       meeting_member_ids = []
       forbidden_member_ids = []
       until meeting_member_ids.length == 3
-        pair = self.delete_max_rank(forbidden_member_ids, ranks)
+        pair = self.delete_max_rank(forbidden_member_ids, ranks, meeting_member_ids.length)
         if pair.nil?
           # at this point it is impossible to create any more triplets
           exit_flag = true
@@ -65,7 +65,9 @@ class Meeting < ActiveRecord::Base
   end
 
   # mutates ranks!
-  def self.delete_max_rank(restricted_ids_arr, rem_ranks)
+  # we want to delete the max rank while also preventing the
+  # future restricted ids from becoming everyone in sup
+  def self.delete_max_rank(restricted_ids_arr, rem_ranks, num_paired)
     rem_ranks_copy = rem_ranks.dup
     restricted_ids_arr.each { |r_id| rem_ranks_copy.delete(r_id) }
 
@@ -75,6 +77,10 @@ class Meeting < ActiveRecord::Base
     else
       p_id, p_h = rem_ranks_copy.max_by do |id, h|
         if restricted_ids_arr.include?(id)
+          next
+        elsif num_paired == 1 && (((h[:edges] + restricted_ids_arr).uniq.length) == (Member.count - 1))
+          # collectively, the restricted ids should not account
+          # for everyone if this is the 2nd person in the triplet
           next
         else
           h[:num_edges]
