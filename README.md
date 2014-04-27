@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ilyakava/xtal.png?label=ready&title=Ready)](https://waffle.io/ilyakava/xtal)
 About
 ---
 
