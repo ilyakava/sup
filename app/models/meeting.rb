@@ -1,5 +1,7 @@
 class Meeting < ActiveRecord::Base
-  has_many :meeting_members
+  extend CostHelper
+
+  has_many :meeting_members, dependent: :destroy
   has_many :members, through: :meeting_members
 
   attr_accessible :member_ids, :meeting_date
@@ -9,6 +11,38 @@ class Meeting < ActiveRecord::Base
 
   def mark_members_not_left_out
     members.each { |m| m.update_attribute(:left_out, false) }
+  end
+
+  # A cost function with two considerations:
+  # 1) what is the time t since the members were in a meeting together last
+  # 2) are the members a part of the same group
+  def cost
+    cost_from_shared_groups + cost_from_shared_meetings
+  end
+
+  def cost_from_shared_groups
+    group_ids = members.map { |member| member.groups.pluck(:id) }
+    # calculates the cost for this triplet by comparing pairs within this triplet
+    group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
+      pair_overlap = pairs_group_ids.first & pairs_group_ids.last
+      cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * CostHelper::SHARED_GROUP
+      acc += cost_per_pair
+    end
+  end
+
+  def cost_from_shared_meetings
+    meeting_ids = members.map { |member| member.meetings.pluck(:id) }
+    # calculates the cost for this triplet by comparing pairs within this triplet
+    meeting_ids.combination(2).reduce(0) do |acc, pairs_meeting_ids|
+      pair_overlap = pairs_meeting_ids.first & pairs_meeting_ids.last
+      cost_per_pair = pair_overlap.reduce(0) do |acc2, id|
+        m = Meeting.find(id)
+        weeks_ago = ((Time.now - m.meeting_date.to_time) / 1.week).floor
+        cost_per_meeting = self.class.shared_meeting_n_weeks_ago(weeks_ago)
+        acc2 += cost_per_meeting
+      end
+      acc += cost_per_pair
+    end
   end
 
   # put everyone in a group, draw connections as edges
