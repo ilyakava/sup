@@ -19,3 +19,6 @@
 # Ignore application configuration
 /config/application.yml
 .sass-cache/
+
+.ruby-version
+.ruby-gemset
