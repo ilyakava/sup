@@ -1,5 +1,4 @@
 class Meeting < ActiveRecord::Base
-  extend CostHelper
 
   has_many :meeting_members, dependent: :destroy
   has_many :members, through: :meeting_members
@@ -8,6 +7,7 @@ class Meeting < ActiveRecord::Base
   accepts_nested_attributes_for :members
 
   before_save :mark_members_not_left_out
+  before_save :pick_meeting_date_if_none
 
   def mark_members_not_left_out
     members.each { |m| m.update_attribute(:left_out, false) }
@@ -25,7 +25,7 @@ class Meeting < ActiveRecord::Base
     # calculates the cost for this triplet by comparing pairs within this triplet
     group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
       pair_overlap = pairs_group_ids.first & pairs_group_ids.last
-      cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * CostHelper::SHARED_GROUP
+      cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * Cost::Helper::SHARED_GROUP
       acc += cost_per_pair
     end
   end
@@ -38,19 +38,69 @@ class Meeting < ActiveRecord::Base
       cost_per_pair = pair_overlap.reduce(0) do |acc2, id|
         m = Meeting.find(id)
         weeks_ago = ((Time.now - m.meeting_date.to_time) / 1.week).floor
-        cost_per_meeting = self.class.shared_meeting_n_weeks_ago(weeks_ago)
+        cost_per_meeting = Cost::Helper.shared_meeting_n_weeks_ago(weeks_ago)
         acc2 += cost_per_meeting
       end
       acc += cost_per_pair
     end
   end
 
+  def self.schedule_all
+    max_target_num_meetings = Member.count / 3
+    best_meetings = nil
+    max_target_num_meetings.downto(1) do |target_num_meetings|
+      best_meetings = Meeting.find_best_meeting(target_num_meetings)
+      break unless best_meetings.nil?
+    end
+    Meeting.multiple_new_from_array(best_meetings).each { |m| m.save! }
+  end
+
+  # cost minimization strategy, monte carlo style
+  def self.find_best_meeting(target_num_meetings)
+    meetings_possible = Member.all.pluck(:id).shuffle.combination(3).to_a.shuffle
+    cursor = meetings_possible.combination(target_num_meetings)
+    curr_best_meeting_round = nil
+    curr_best_cost = Float::INFINITY
+    trials_since_best_cost_beaten = 0
+
+    cursor.each do |meeting_round|
+      # disqualify meeting rounds with people belonging to several simultaneous
+      # meetings this condition is not met the majority of times, so no need
+      # to increment trials_since_best_cost_beaten
+      exit = if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
+        cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a += e.cost.to_f }
+        # check if this meeting is the best so far
+        if curr_best_cost > cum_cost
+          curr_best_cost = cum_cost
+          curr_best_meeting_round = meeting_round
+          trials_since_best_cost_beaten = 0
+          puts curr_best_cost
+        else
+          trials_since_best_cost_beaten += 1
+        end
+        cum_cost # cumulative cost of 0 for meetings is optimal (the best solution possible)
+      else
+        1 # traditional failure exit code (this value is not significant)
+      end
+      # conditions for a successful meeting being found
+      break if exit.zero? || (trials_since_best_cost_beaten > 10000 && !curr_best_meeting_round.nil?)
+    end
+    curr_best_meeting_round
+  end
+
+  def self.multiple_new_from_array(as)
+    e = "Input must be an array of arrays length 3 containing Member ids!"
+    raise e unless (as.is_a? Array) && (as[0].is_a? Array) && (as[0][0].is_a? Numeric)
+    as.map { |a| Meeting.new(member_ids: a) }
+  end
+
+
   # put everyone in a group, draw connections as edges
   # rank by edges
   # pick first by rank
   # pick second by rank that isn't connected to first
   # pick third by rank that isn't connected to either first or second
-  def self.schedule_all
+  def self.schedule_all2
     exit_flag = false # talk about laziness
     ranks = Hash[Member.all.map do |member|
       edge_ids = member.edge_ids
@@ -93,9 +143,13 @@ class Meeting < ActiveRecord::Base
   end
 
   # TODO check calendars of members
-  def self.choose_date(member_ids)
+  def self.choose_date(member_ids = [])
     nearest_monday = Date.commercial(Date.today.year, 1+Date.today.cweek, 1)
     return nearest_monday + rand(5).days
+  end
+
+  def pick_meeting_date_if_none
+    self.meeting_date = Meeting.choose_date unless meeting_date
   end
 
   # mutates ranks!
