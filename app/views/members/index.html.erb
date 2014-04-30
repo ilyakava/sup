@@ -1,11 +1,7 @@
 <div class="black-button"><%= link_to "Add a new email", action: "new" %></div>
 
-<table>
-
+<div class="member-list">
   <% @members.each do |member| %>
-    <tr class="member-list-item">
-      <td><%= member.email %></td>
-      <td class="edit-arrow"><%= link_to "", action: "edit", id: member %></td>
-    </tr>
+    <%= link_to member.email, { action: "edit", id: member }, class: "member-list-item" %>
   <% end %>
-</table>
+</div>
