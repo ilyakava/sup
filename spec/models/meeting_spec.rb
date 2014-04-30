@@ -106,7 +106,6 @@ describe "overall meeting scheduling" do
     end
 
     it "creates the right number of meetings" do
-      pending("scheduling changes in progress")
       Meeting.schedule_all
       expect(Meeting.count).to eq(2)
     end
@@ -152,6 +151,35 @@ describe "overall meeting scheduling" do
     end
 
     it "doesn't pair those in the same work group" do
+      Meeting.schedule_all
+      Meeting.all.each do |meeting|
+        expect(meeting.members.map(&:groups).flatten.uniq.count).to eq(3)
+      end
+    end
+  end
+
+  describe "a complicated real world example with multigroup memberships" do
+    before :each do
+      group_ids = (1..17).to_a.map { |n| Group.create(name: n.to_s).id }
+      members_w_group_membership_indexes = [[7], [10], [16, 17, 9, 10, 15], [4, 15], [11], [12], [4, 16], [1], [5], [4, 16], [2], [1], [9, 11, 12, 13, 14], [4], [5], [4, 17], [16], [2], [4, 15], [5], [14], [4], [9, 10], [11], [4], [2], [11], [4], [9, 15, 16], [13], [4], [14], [13], [4, 15], [14], [13], [4], [12], [2], [4], [6], [17], [2], [1], [3], [10], [7], [3], [6], [5], [1]]
+      members_w_group_membership_indexes.each do |ids|
+        Member.create(
+          name: rand(9999999999),
+          email: "#{rand(9999999999)}@artsymail.com",
+          group_ids: ids.map { |idx| group_ids[idx - 1]}
+        )
+      end
+    end
+
+    it "creates the right number of meetings" do
+      pending("not ready")
+      Meeting.schedule_all
+      binding.pry
+      expect(Meeting.count).to eq(2)
+    end
+
+    it "doesn't pair those in the same work group" do
+      pending("not ready")
       Meeting.schedule_all
       Meeting.all.each do |meeting|
         expect(meeting.members.map(&:groups).flatten.uniq.count).to eq(3)
