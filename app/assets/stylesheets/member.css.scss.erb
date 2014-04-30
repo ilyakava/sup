@@ -143,28 +143,31 @@ body {
 			}
 		}
 	}
+}
 
-	table {
-		margin-top: 20px;
-		width: 100%;
-		tr.member-list-item:hover {
-			background-color: $gray;
-		}
-		tr.member-list-item {
-			width: 98%;
-			display: block;
-			border-top: 2px solid $gray;
-			padding: 10px;
-			@include clearfix;
-			font-weight: 600;
-
-
-			td.edit-arrow > a {
-				float: right;
-				width: 12px;
-				height: 18px;
-				background-image: $chevron-right;
-			}
-		}
-	}
+.member-list {
+  margin-top: 20px;
+  width: 100%;
+  .member-list-item {
+    color: black;
+    width: 98%;
+    display: block;
+    border-top: 2px solid $gray;
+    padding: 10px;
+    @include clearfix;
+    font-weight: 600;
+    &:last-child {
+      border-bottom: 2px solid $gray;
+    }
+    &:hover {
+      background-color: $gray;
+    }
+    &:after {
+      content: '';
+      float: right;
+      width: 12px;
+      height: 18px;
+      background-image: $chevron-right;
+    }
+  }
 }
