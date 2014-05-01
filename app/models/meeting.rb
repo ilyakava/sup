@@ -57,13 +57,16 @@ class Meeting < ActiveRecord::Base
 
   # cost minimization strategy, monte carlo style
   def self.find_best_meeting(target_num_meetings)
-    meetings_possible = Member.all.pluck(:id).shuffle.combination(3).to_a.shuffle
-    cursor = meetings_possible.combination(target_num_meetings)
+    puts "starting find_best_meeting(#{target_num_meetings})"
+    # meetings_possible = Member.all.pluck(:id).shuffle.combination(3).to_a.shuffle
+    cursor = Cost::Helper.new.enumerator(target_num_meetings)
     curr_best_meeting_round = nil
     curr_best_cost = Float::INFINITY
     trials_since_best_cost_beaten = 0
+    crap_counter = 0
 
     cursor.each do |meeting_round|
+      puts "doing it #{crap_counter += 1}"
       # disqualify meeting rounds with people belonging to several simultaneous
       # meetings this condition is not met the majority of times, so no need
       # to increment trials_since_best_cost_beaten

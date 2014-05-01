@@ -172,7 +172,7 @@ describe "overall meeting scheduling" do
     end
 
     it "creates the right number of meetings" do
-      pending("not ready")
+      # pending("not ready")
       Meeting.schedule_all
       binding.pry
       expect(Meeting.count).to eq(2)
