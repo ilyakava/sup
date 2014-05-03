@@ -108,9 +108,15 @@ module Cost
           # The base case for valid_addition_indexes
           (0...(@all_triplets.length)).to_a
         else
-          # remove all of tripliets containing members already selected
+          # remove all of tripliets containing members already selected by
+          # intersecting the arrays of allowed indexes in the hash h
           h = @member_id_to_non_membered_triplet_indexes
-          arr_of_trips.flatten.map { |id| h[id] }.inject(&:&)
+          members = arr_of_trips.flatten.sort
+          if h[(key = members.to_s)].nil?
+            h[key] = members.map { |id| h[id] }.reduce(&:&)
+          else
+            h[key]
+          end
         end
         # rotate through deepest branches unless we are near enough triplets
         valid_addition_indexes_subset = if (target_num_triplets - arr_of_trips.length) > 3
