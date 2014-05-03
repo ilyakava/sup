@@ -124,15 +124,9 @@ module Cost
           which_VAI_to_explore_now.map { |idx| valid_addition_indexes[idx] }
         end
         next_indexes = valid_addition_indexes_subset || valid_addition_indexes
-        if next_indexes.blank?
-          return :bad_branch_one_level_deep # if there are no further choices
-        else
-          next_indexes.each do |addition_index|
-            trip = @all_triplets[addition_index]
-            value = level(target_num_triplets, yielder, seed, [*arr_of_trips, trip])
-            return :bad_branch_two_levels_deep if value == :bad_branch_one_level_deep
-            return if value == :bad_branch_two_levels_deep
-          end
+        next_indexes.each do |addition_index|
+          trip = @all_triplets[addition_index]
+          value = level(target_num_triplets, yielder, seed, [*arr_of_trips, trip])
         end
       end
     end
