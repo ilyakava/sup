@@ -170,19 +170,13 @@ describe "overall meeting scheduling" do
         )
       end
     end
-
-    it "creates the right number of meetings" do
-      # pending("not ready")
-      Meeting.schedule_all
-      binding.pry
-      expect(Meeting.count).to eq(2)
-    end
-
-    it "doesn't pair those in the same work group" do
-      pending("not ready")
-      Meeting.schedule_all
-      Meeting.all.each do |meeting|
-        expect(meeting.members.map(&:groups).flatten.uniq.count).to eq(3)
+    # bunched together tests here because these may take as long as a couple minutes each
+    it "creates a permissible number of meetings through several rounds" do
+      10.times do |i|
+        start_time = Time.now
+        Meeting.schedule_all
+        expect(Meeting.count > 10).to be_true
+        puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
       end
     end
   end

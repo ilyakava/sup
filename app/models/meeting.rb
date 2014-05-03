@@ -23,6 +23,9 @@ class Meeting < ActiveRecord::Base
   def cost_from_shared_groups
     group_ids = members.map { |member| member.groups.pluck(:id) }
     # calculates the cost for this triplet by comparing pairs within this triplet
+
+    # Cost::SharedGroup.cost_from_shared_groups(group_ids)
+
     group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
       pair_overlap = pairs_group_ids.first & pairs_group_ids.last
       cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * Cost::Helper::SHARED_GROUP
@@ -57,8 +60,6 @@ class Meeting < ActiveRecord::Base
 
   # cost minimization strategy, monte carlo style
   def self.find_best_meeting(target_num_meetings)
-    puts "starting find_best_meeting(#{target_num_meetings})"
-    # meetings_possible = Member.all.pluck(:id).shuffle.combination(3).to_a.shuffle
     cursor = Cost::Helper.new.enumerator(target_num_meetings)
     curr_best_meeting_round = nil
     curr_best_cost = Float::INFINITY
@@ -66,18 +67,17 @@ class Meeting < ActiveRecord::Base
     crap_counter = 0
 
     cursor.each do |meeting_round|
-      puts "doing it #{crap_counter += 1}"
       # disqualify meeting rounds with people belonging to several simultaneous
       # meetings this condition is not met the majority of times, so no need
       # to increment trials_since_best_cost_beaten
       exit = if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
+        puts "doing it #{crap_counter += 1}, with cost #{curr_best_cost}"
         cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a += e.cost.to_f }
         # check if this meeting is the best so far
         if curr_best_cost > cum_cost
           curr_best_cost = cum_cost
           curr_best_meeting_round = meeting_round
           trials_since_best_cost_beaten = 0
-          puts curr_best_cost
         else
           trials_since_best_cost_beaten += 1
         end
@@ -86,7 +86,7 @@ class Meeting < ActiveRecord::Base
         1 # traditional failure exit code (this value is not significant)
       end
       # conditions for a successful meeting being found
-      break if exit.zero? || (trials_since_best_cost_beaten > 10000 && !curr_best_meeting_round.nil?)
+      break if exit.zero? || (trials_since_best_cost_beaten > 50 && !curr_best_meeting_round.nil?)
     end
     curr_best_meeting_round
   end
