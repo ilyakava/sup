@@ -17,7 +17,9 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'figaro'
 gem 'premailer-rails'
 gem 'nokogiri'
+# has a more performant array intersection method
 gem 'picky'
+gem 'timecop'
 
 gem 'rails_12factor', group: :production
 

@@ -24,7 +24,7 @@ module Cost
 
     def triplets_to_num_restrictions
       v = valid_triplets_unsorted
-      Hash[v.map { |trip| [trip, trip.map { |m_id| @members_to_groups[m_id] + @members_to_last_week_meeting_members[m_id]  }.flatten.length] }]
+      Hash[v.map { |trip| [trip, trip.map { |m_id| @members_to_groups[m_id] + @members_to_last_week_meeting_members[m_id]  }.flatten.uniq.length] }]
     end
 
     def valid_triplets_unsorted
@@ -63,6 +63,7 @@ module Cost
     end
   end
 
+  # This class is for keeping values to score individual meetings by
   class Helper
     SHARED_GROUP = Float::INFINITY
 
@@ -77,6 +78,10 @@ module Cost
     end
   end
 
+  # This class is for enumerating over groups of triplets in a less stupid way
+  # than using the combination Array method, which will result in many more
+  # infinitely costly triples or impossible triples (with members in multiple
+  # meetings in 1 week) than not
   class TripletGroupGenerator
     # NUM_SEEDS is the number of groups to break deep branches into
     # this number was chosen from trial and error, looking at
@@ -127,11 +132,10 @@ module Cost
       # an easy way to find the few hundred triplets that have the most
       # allowances (since array intersection is quite slow)
       counter, hardest2pair_triplets = 0, {}
-      until hardest2pair_triplets.count > 50
+      until hardest2pair_triplets.count > 50 || hardest2pair_triplets.count == ttnr.count
         hardest2pair_triplets = Hash[ttnr.find_all { |k, v| v >= (m - counter) }]
         counter += 1
       end
-      puts "--> found #{hardest2pair_triplets.count} num maxes to intersect with"
       # map member choices to the number of additional choices for triplets that they have
       hardest2pair_to_num_allowances = Hash[hardest2pair_triplets.keys.map do |members|
         h = @member_id_to_non_membered_triplet_indexes
@@ -144,10 +148,9 @@ module Cost
     # depth first search for valid triplet groupings
     def level(target_num_triplets, yielder, seed, arr_of_trips)
       if arr_of_trips.length == target_num_triplets
-        puts "yielding #{rand(999999)}"
+        print "."
         yielder << arr_of_trips # The final case is a side-effect
       else
-        # print "|#{arr_of_trips.length}|"
         # pick another triplet for the group that does not contain any member_ids
         # that are already in the current group of triplets. This is ensured by
         # intersecting the arrays of allowed indexes in the hash h, with some memoization

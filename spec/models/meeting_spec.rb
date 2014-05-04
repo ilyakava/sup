@@ -173,10 +173,12 @@ describe "overall meeting scheduling" do
     # bunched together tests here because these may take as long as a couple minutes each
     it "creates a permissible number of meetings through several rounds" do
       10.times do |i|
-        start_time = Time.now
-        Meeting.schedule_all
-        expect(Meeting.count > 10).to be_true
-        puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
+        Timecop.travel(Date.today + (i * 1.week)) do
+          start_time = Time.now
+          Meeting.schedule_all
+          expect(Meeting.count > 10).to be_true
+          puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
+        end
       end
     end
   end
@@ -196,10 +198,12 @@ describe "overall meeting scheduling" do
     # bunched together tests here because these may take as long as a couple minutes each
     it "creates a permissible number of meetings through several rounds" do
       20.times do |i|
-        start_time = Time.now
-        Meeting.schedule_all
-        expect(Meeting.count > 10).to be_true
-        puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
+        Timecop.travel(Date.today + (i * 1.week)) do
+          start_time = Time.now
+          Meeting.schedule_all
+          expect(Meeting.count > 10).to be_true
+          puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
+        end
       end
     end
   end

@@ -9,8 +9,44 @@ class Meeting < ActiveRecord::Base
   before_save :mark_members_not_left_out
   before_save :pick_meeting_date_if_none
 
+  # Conveniently instantiate many meetings
+  def self.multiple_new_from_array(as)
+    e = "Input must be an array of arrays length 3 containing Member ids!"
+    raise e unless (as.is_a? Array) && (as[0].is_a? Array) && (as[0][0].is_a? Numeric)
+    as.map { |a| Meeting.new(member_ids: a) }
+  end
+
+  def self.trigger_weekly_email
+    time_range = (3.days.ago..Time.now)
+    Meeting.where(created_at: time_range).each do |meeting|
+      MeetingMailer.new_meeting(meeting).deliver
+    end
+  end
+
+  def self.trigger_weekly_debug_email
+    time_range = (3.days.ago..Time.now)
+    Meeting.where(created_at: time_range).each do |meeting|
+      MeetingMailer.new_meeting_debug(meeting).deliver
+    end
+  end
+
   def mark_members_not_left_out
     members.each { |m| m.update_attribute(:left_out, false) }
+  end
+
+  # its not really predictable how the groups of 3 will be devided, so this is
+  # a random enough yet consistent way of selecting a "leader" for each meeting
+  def leader
+    members.last
+  end
+
+  # TODO check calendars of members
+  def self.choose_date(member_ids = [])
+    return Date.parse("Monday") + rand(5).days
+  end
+
+  def pick_meeting_date_if_none
+    self.meeting_date = Meeting.choose_date unless meeting_date
   end
 
   # A cost function with two considerations:
@@ -64,7 +100,6 @@ class Meeting < ActiveRecord::Base
     curr_best_meeting_round = nil
     curr_best_cost = Float::INFINITY
     trials_since_best_cost_beaten = 0
-    crap_counter = 0
 
     cursor.each do |meeting_round|
       # disqualify meeting rounds with people belonging to several simultaneous
@@ -72,7 +107,6 @@ class Meeting < ActiveRecord::Base
       # to increment trials_since_best_cost_beaten
       exit = if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
         cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a += e.cost.to_f }
-        puts "doing it #{crap_counter += 1}, with cost #{cum_cost}"
         # check if this meeting is the best so far
         if curr_best_cost > cum_cost
           curr_best_cost = cum_cost
@@ -86,17 +120,13 @@ class Meeting < ActiveRecord::Base
         1 # failure exit code (this value is not significant)
       end
       # conditions for a successful meeting being found
-      break if exit.zero? || (trials_since_best_cost_beaten > 50 && !curr_best_meeting_round.nil?)
+      break if exit.zero? || (trials_since_best_cost_beaten > 10 && !curr_best_meeting_round.nil?)
     end
     curr_best_meeting_round
   end
 
-  def self.multiple_new_from_array(as)
-    e = "Input must be an array of arrays length 3 containing Member ids!"
-    raise e unless (as.is_a? Array) && (as[0].is_a? Array) && (as[0][0].is_a? Numeric)
-    as.map { |a| Meeting.new(member_ids: a) }
-  end
-
+  ##### Deprecated methods below, kept jic above methods take too long.
+  # @todo delete these with confidence
 
   # put everyone in a group, draw connections as edges
   # rank by edges
@@ -131,30 +161,6 @@ class Meeting < ActiveRecord::Base
     end
   end
 
-  def self.trigger_weekly_email
-    time_range = (3.days.ago..Time.now)
-    Meeting.where(created_at: time_range).each do |meeting|
-      MeetingMailer.new_meeting(meeting).deliver
-    end
-  end
-
-  def self.trigger_weekly_debug_email
-    time_range = (3.days.ago..Time.now)
-    Meeting.where(created_at: time_range).each do |meeting|
-      MeetingMailer.new_meeting_debug(meeting).deliver
-    end
-  end
-
-  # TODO check calendars of members
-  def self.choose_date(member_ids = [])
-    nearest_monday = Date.commercial(Date.today.year, 1+Date.today.cweek, 1)
-    return nearest_monday + rand(5).days
-  end
-
-  def pick_meeting_date_if_none
-    self.meeting_date = Meeting.choose_date unless meeting_date
-  end
-
   # mutates ranks!
   # we want to delete the max rank while also preventing the
   # future restricted ids from becoming everyone in sup
@@ -180,12 +186,6 @@ class Meeting < ActiveRecord::Base
       rem_ranks.delete(p_id)
       [p_id, p_h]
     end
-  end
-
-  # its not really predictable how the groups of 3 will be devided, so this is
-  # a random enough yet consistent way of selecting a "leader" for each meeting
-  def leader
-    members.last
   end
 end
 #--
