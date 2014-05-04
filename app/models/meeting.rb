@@ -60,7 +60,7 @@ class Meeting < ActiveRecord::Base
 
   # cost minimization strategy, monte carlo style
   def self.find_best_meeting(target_num_meetings)
-    cursor = Cost::Helper.new.enumerator(target_num_meetings)
+    cursor = Cost::TripletGroupGenerator.new.enumerator(target_num_meetings)
     curr_best_meeting_round = nil
     curr_best_cost = Float::INFINITY
     trials_since_best_cost_beaten = 0
@@ -71,8 +71,8 @@ class Meeting < ActiveRecord::Base
       # meetings this condition is not met the majority of times, so no need
       # to increment trials_since_best_cost_beaten
       exit = if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
-        puts "doing it #{crap_counter += 1}, with cost #{curr_best_cost}"
         cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a += e.cost.to_f }
+        puts "doing it #{crap_counter += 1}, with cost #{cum_cost}"
         # check if this meeting is the best so far
         if curr_best_cost > cum_cost
           curr_best_cost = cum_cost
@@ -83,7 +83,7 @@ class Meeting < ActiveRecord::Base
         end
         cum_cost # cumulative cost of 0 for meetings is optimal (the best solution possible)
       else
-        1 # traditional failure exit code (this value is not significant)
+        1 # failure exit code (this value is not significant)
       end
       # conditions for a successful meeting being found
       break if exit.zero? || (trials_since_best_cost_beaten > 50 && !curr_best_meeting_round.nil?)

@@ -180,6 +180,29 @@ describe "overall meeting scheduling" do
       end
     end
   end
+
+  describe "a second complicated real world example with multigroup memberships" do
+    before :each do
+      group_ids = (1..17).to_a.map { |n| Group.create(name: n.to_s).id }
+      members_w_group_membership_indexes = [[13, 14], [12], [13], [3], [11], [6], [12], [4, 16], [1], [5], [4, 16], [2], [1], [9, 11, 12, 13, 14], [4], [5], [4, 17], [16], [2], [4, 15], [5], [14], [4], [9, 10], [11], [4], [11], [4], [9, 15, 16], [13], [14], [13], [14], [13], [12], [2], [6], [17], [2], [1], [10], [7], [6, 15, 17], [4, 15, 16, 17], [2], [4], [4, 15], [4], [4], [10], [1], [3], [7], [5]]
+      members_w_group_membership_indexes.each do |ids|
+        Member.create(
+          name: rand(9999999999),
+          email: "#{rand(9999999999)}@artsymail.com",
+          group_ids: ids.map { |idx| group_ids[idx - 1]}
+        )
+      end
+    end
+    # bunched together tests here because these may take as long as a couple minutes each
+    it "creates a permissible number of meetings through several rounds" do
+      20.times do |i|
+        start_time = Time.now
+        Meeting.schedule_all
+        expect(Meeting.count > 10).to be_true
+        puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
+      end
+    end
+  end
 end
 
 describe "Meeting::choose_date" do

@@ -17,6 +17,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'figaro'
 gem 'premailer-rails'
 gem 'nokogiri'
+gem 'picky'
 
 gem 'rails_12factor', group: :production
 
