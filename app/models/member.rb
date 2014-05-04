@@ -1,4 +1,7 @@
 class Member < ActiveRecord::Base
+
+  MAX_GROUPS = 5
+
   has_many(
     :group_members,
     :class_name => "GroupMember",
@@ -14,7 +17,9 @@ class Member < ActiveRecord::Base
   has_many :meeting_members
   has_many :meetings, through: :meeting_members
 
-  validates_presence_of :groups
+  validates :groups, length: { in: 1..MAX_GROUPS,
+    too_short: ": you must be a part of at least %{count} group.",
+    too_long: ": you may be a part of at most %{count} groups." }
   validates_presence_of :name
   validates_presence_of :email
   validates_format_of :email, :with => /@artsy|@art\.sy/

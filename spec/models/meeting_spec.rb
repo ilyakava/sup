@@ -171,7 +171,7 @@ describe "overall meeting scheduling" do
       end
     end
     # bunched together tests here because these may take as long as a couple minutes each
-    it "creates a permissible number of meetings through several rounds" do
+    it "creates a permissible number of meetings through several rounds", :speed => 'slow' do
       10.times do |i|
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now
@@ -196,7 +196,7 @@ describe "overall meeting scheduling" do
       end
     end
     # bunched together tests here because these may take as long as a couple minutes each
-    it "creates a permissible number of meetings through several rounds" do
+    it "creates a permissible number of meetings through several rounds", :speed => 'slow' do
       20.times do |i|
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now

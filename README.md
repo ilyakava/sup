@@ -26,3 +26,8 @@ Contributing
 ---
 
 * Click on the waffle badge to check what needs to be done!
+
+Testing
+---
+
+run `rspec . --tag ~speed:slow` to exclude the slow specs that check the consistency of the pairing algorithm
