@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <body id="meeting">
+    <p>Hey <%= "#{@member}" %>,</p>
+    <p>
+      Just confirming that <b><%= @meeting.ego_to_s(@member, @excluded_members, 3) %></b> met this week for S'up.
+    </p>
+    <div class="black-button">
+      <%= button_to "Save", meeting_path(@meeting, member_ids: params[:member_ids] ), method: :put %>
+    </div>
+  </body>
+</html>

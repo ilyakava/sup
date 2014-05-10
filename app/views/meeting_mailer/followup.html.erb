@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type="text/css">
+      body#welcome div.post-script, body#meeting div.post-script, body#meeting-followup div.post-script {
+  color: #999999;
+  margin-top: 40px; }
+  body#welcome div.post-script ul, body#meeting div.post-script ul, body#meeting-followup div.post-script ul {
+    margin-top: 10px; }
+
+body#meeting-followup p {
+  font-family: arial, sans-serif; }
+body#meeting-followup #meeting-confirmation-buttons {
+  width: 400px; }
+  body#meeting-followup #meeting-confirmation-buttons a, body#meeting-followup #meeting-confirmation-buttons input {
+    width: 100%;
+    padding: 15px 0px;
+    display: block;
+    background-color: black;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "AvantGardeGothicITCW01D 731075","Helvetica Neue",Arial,Helvetica,sans-serif;
+    border: 2px solid black;
+    margin: 10px 0;
+    font-weight: bold;
+    text-decoration: none; }
+  body#meeting-followup #meeting-confirmation-buttons a:nth-child(0) {
+    background-color: #6600cc; }
+  body#meeting-followup #meeting-confirmation-buttons a:nth-child(1) {
+    background-color: #5501ae; }
+  body#meeting-followup #meeting-confirmation-buttons a:nth-child(2) {
+    background-color: #46048e; }
+  body#meeting-followup #meeting-confirmation-buttons a:nth-child(3) {
+    background-color: #370570; }
+  body#meeting-followup #meeting-confirmation-buttons a:nth-child(4) {
+    background-color: #280551; }
+    </style>
+  </head>
+  <body id="meeting-followup">
+    <p>Hey <%= "#{@member}" %>,</p>
+    <p>
+      As the randomly assigned (but very important) leader of your S’UP group this week, I just wanted to check in -- how’d it go?
+    </p>
+    <div id="meeting-confirmation-buttons">
+    	<%= link_to "#{@meeting.ego_to_s(@member)} met",
+    		edit_meeting_url(@meeting, member_id: @member, member_ids: @meeting.member_ids) %>
+    	<% @meeting.members.each do |excluded_member| %>
+    		<%= link_to "#{@meeting.ego_to_s(@member, [excluded_member])} met",
+    			edit_meeting_url(@meeting, member_id: @member, member_ids: @meeting.member_ids - [excluded_member.id]) %>
+		<% end %>
+    	<%= link_to "#{@meeting.ego_to_s(@member, @meeting.members)} could meet",
+    		edit_meeting_url(@meeting, member_id: @member, member_ids: []) %>
+    </div>
+
+    <div class="post-script">
+      <p>We use this information to keep the matches fresh.</p>
+	</div>
+
+  </body>
+</html>

@@ -16,11 +16,55 @@ body#welcome, body#meeting {
 		font-size: 13px;
 		font-weight: bold;
 	}
+}
+
+body#welcome, body#meeting, body#meeting-followup {
 	div.post-script {
 		color: rgb(153, 153, 153);
 		margin-top: 40px;
 		ul {
 			margin-top: 10px;
+		}
+	}
+}
+
+$purple: #6a0bc1;
+
+body#meeting-followup {
+	p {
+		font-family: arial, sans-serif;
+	}
+	#meeting-confirmation-buttons {
+		width: 400px;
+		a, input {
+			width: 100%;
+			padding: 15px 0px;
+			display: block;
+			background-color: black;
+			color: white;
+			text-align: center;
+			text-transform: uppercase;
+			font-family: "AvantGardeGothicITCW01D 731075","Helvetica Neue",Arial,Helvetica,sans-serif;
+			border: 2px solid black;
+			margin: 10px 0;
+			font-weight: bold;
+			text-decoration: none;
+		}
+
+		a:nth-child(0) {
+			background-color: rgb(102,0,204	);
+		}
+		a:nth-child(1) {
+			background-color: rgb(85,1,174);
+		}
+		a:nth-child(2) {
+			background-color: rgb(70,4,142);
+		}
+		a:nth-child(3) {
+			background-color: rgb(55,5,112);
+		}
+		a:nth-child(4) {
+			background-color: rgb(40,5,81);
 		}
 	}
 }

@@ -16,6 +16,15 @@ task :trigger_weekly_debug_email => :environment do
   end
 end
 
+desc "mail all followup emails for the past week's meetings"
+task :trigger_followup_email => :environment do
+  if Time.now.saturday?
+    puts "Sending weekly followup email..."
+    Meeting.trigger_followup_email
+    puts "Done sending weekly followup email..."
+  end
+end
+
 desc "mail all meetings for the week to meeting members"
 task :trigger_weekly_email => :environment do
   if Time.now.sunday?

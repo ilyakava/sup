@@ -23,6 +23,13 @@ class Meeting < ActiveRecord::Base
     end
   end
 
+  def self.trigger_followup_email
+    time_range = (6.days.ago..Time.now)
+    Meeting.where(meeting_date: time_range).each do |meeting|
+      MeetingMailer.followup(meeting).deliver
+    end
+  end
+
   def self.trigger_weekly_debug_email
     time_range = (3.days.ago..Time.now)
     Meeting.where(created_at: time_range).each do |meeting|
@@ -38,6 +45,23 @@ class Meeting < ActiveRecord::Base
   # a random enough yet consistent way of selecting a "leader" for each meeting
   def leader
     members.last
+  end
+
+  # A method for regarding the meetup from a person's perspective
+  # can be in either 1st or 3rd person. Supports referencing the
+  # meeting as incomplete
+  def ego_to_s(whoami, excluded_members = [], person = 1)
+    pruned = members - excluded_members
+    if excluded_members.count == 3
+      person == 1 ? "None of us" : "No one"
+    elsif pruned.count == 3
+      person == 1 ? "We all" : "Everyone"
+    # either none, all, or 1 person may be left out of a meeting
+    elsif excluded_members.first == whoami
+      pruned.map(&:to_s).join(" and ")
+    else
+      "#{(pruned - [whoami]).first} and #{person == 1 ? "I" : "you"}"
+    end
   end
 
   # TODO check calendars of members
