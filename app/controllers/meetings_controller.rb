@@ -8,6 +8,6 @@ class MeetingsController < ApplicationController
   def update
     @meeting = Meeting.find(params[:id])
     @meeting.update_attribute(:member_ids, params[:member_ids])
-    redirect_to root_path
+    redirect_to new_feedback_url(member_id: params[:member_id])
   end
 end
