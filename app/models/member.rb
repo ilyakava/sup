@@ -6,7 +6,8 @@ class Member < ActiveRecord::Base
     :group_members,
     :class_name => "GroupMember",
     :foreign_key => :member_id,
-    :primary_key => :id
+    :primary_key => :id,
+    :dependent => :destroy
   )
   has_many(
     :groups,
@@ -14,7 +15,7 @@ class Member < ActiveRecord::Base
     :source => :group
   )
 
-  has_many :meeting_members
+  has_many :meeting_members, :dependent => :destroy
   has_many :meetings, through: :meeting_members
 
   validates :groups, length: { in: 1..MAX_GROUPS,
