@@ -213,4 +213,15 @@ describe "Meeting::choose_date" do
   it "always returns a date" do
     expect(Meeting.choose_date([1,2,3]).is_a? Date).to be_true
   end
+  it "chooses a date for the upcoming week" do
+    # time the cron runs for scheduling the meetings
+    friday = Date.parse('2014-05-09')
+    monday = Date.parse('2014-05-12')
+    next_friday = Date.parse('2014-05-16')
+    Timecop.travel(friday.to_time + 14.hours + 30.minutes) do
+      date = Meeting.choose_date([1,2,3])
+      date.should be <= next_friday
+      date.should be >= monday
+    end
+  end
 end

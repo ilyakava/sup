@@ -66,7 +66,7 @@ class Meeting < ActiveRecord::Base
 
   # TODO check calendars of members
   def self.choose_date(member_ids = [])
-    return Date.parse("Monday") + rand(5).days
+    return Date.parse("Monday") + 7.days + rand(5).days
   end
 
   def pick_meeting_date_if_none
