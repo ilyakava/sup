@@ -1,3 +1,3 @@
 # Be sure to restart your server when you modify this file.
 
-Xtal::Application.config.session_store :cookie_store, key: '_xtal_session'
+Sup::Application.config.session_store :cookie_store, key: '_sup_session'

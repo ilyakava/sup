@@ -1,4 +1,4 @@
-Xtal::Application.routes.draw do
+Sup::Application.routes.draw do
   root to: 'members#index'
   resources :members
   resources :meetings, only: [:edit, :update]

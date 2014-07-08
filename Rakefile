@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Xtal::Application.load_tasks
+Sup::Application.load_tasks

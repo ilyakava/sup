@@ -23,6 +23,6 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: xtal_test
+  database: sup_test
   pool: 5
   password:
