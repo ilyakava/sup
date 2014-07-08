@@ -238,20 +238,4 @@ describe "#leader" do
     ml1 = m.leader
     m.leader.should eq(ml1)
   end
-  it "varies the leader as time goes by" do
-    friday = Date.parse('2014-05-02')
-    Timecop.travel(friday.to_time) do
-      m1 = Meeting.create(member_ids: @member_ids)
-      @ml1 = m1.leader
-    end
-    Timecop.travel(friday.to_time + 1.week) do
-      m2 = Meeting.create(member_ids: @member_ids)
-      @ml2 = m2.leader
-    end
-    Timecop.travel(friday.to_time + 2.weeks) do
-      m3 = Meeting.create(member_ids: @member_ids)
-      @ml3 = m3.leader
-    end
-    [@ml1.id, @ml2.id, @ml3.id].uniq.length.should be >= 2
-  end
 end

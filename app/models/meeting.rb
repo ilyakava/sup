@@ -48,7 +48,7 @@ class Meeting < ActiveRecord::Base
   end
 
   def pick_leader
-    members.min_by { |m| rand(99999999) % m.id }
+    members.sample
   end
 
   def meeting_date_week_of_month
