@@ -156,6 +156,15 @@ describe "overall meeting scheduling" do
         expect(meeting.members.map(&:groups).flatten.uniq.count).to eq(3)
       end
     end
+
+    it "doesn't schedule meetings for a member marked skip_meetings" do
+      id = Member.all.sample.id
+      Member.find(id).update_attribute(:skip_meetings, true)
+      Meeting.schedule_all
+      Meeting.all.each do |meeting|
+        expect(meeting.members.map(&:id).flatten.include?(id)).to be false
+      end
+    end
   end
 
   describe "a complicated real world example with multigroup memberships" do

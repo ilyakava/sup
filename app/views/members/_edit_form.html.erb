@@ -20,6 +20,18 @@
     <label>Email</label>
     <input type="text" name="member[email]" value="<%= member.email %>">
   </div>
+
+  <div class="check-box">
+    <label>
+      <input name="member[skip_meetings]" type="hidden" value="0">
+      <input
+        type="checkbox"
+        name="member[skip_meetings]"
+        value="1"
+        <%= member.skip_meetings ? 'checked="checked"' : '' %>>
+      Be excluded from S'up meetings
+    </label>
+  </div>
 </div>
 
 <div class="input-box-container">

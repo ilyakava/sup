@@ -10,10 +10,10 @@ module Cost
       @groups_to_members = Hash[Group.all.map do |g|
         [g.id, g.members.pluck(:id)]
       end]
-      @members_to_groups = Hash[Member.all.map do |m|
+      @members_to_groups = Hash[Member.active.map do |m|
         [m.id, m.groups.pluck(:id)]
       end]
-      @members_to_last_week_meeting_members = Hash[Member.all.map do |m|
+      @members_to_last_week_meeting_members = Hash[Member.active.map do |m|
         meeting_ids = m.meetings.map do |meeting|
           weeks_ago = ((Time.now - meeting.meeting_date.to_time) / 1.week).floor
           meeting.id if weeks_ago <= 2 # pretty strict
@@ -28,7 +28,7 @@ module Cost
     end
 
     def valid_triplets_unsorted
-      Member.all.pluck(:id).combination(3).to_a.select do |trip|
+      Member.active.pluck(:id).combination(3).to_a.select do |trip|
         cost_is_finite(trip)
       end
     end
@@ -96,7 +96,7 @@ module Cost
       @tf = TripletFactory.new
       @all_triplets = @tf.valid_triplets
       all_triplets_flat = @all_triplets.flatten
-      @member_ids = Member.all.pluck(:id)
+      @member_ids = Member.active.pluck(:id)
       # This is a hash where for every key (a member id) the value is an array
       # of indexes in @all_triplets where the member id does not occur.
       @member_id_to_non_membered_triplet_indexes = Hash[
