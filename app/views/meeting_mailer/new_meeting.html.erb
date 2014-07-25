@@ -22,7 +22,7 @@
     </style>
   </head>
   <body id="meeting">
-    <h1>S'UP at Artsy these days with <%= "#{@members[0]}, #{@members[1]}, and #{@members[2]}?" %></h1>
+    <h1>S'UP at <%= ENV['COMPANY_NAME'] %> these days with <%= "#{@members[0]}, #{@members[1]}, and #{@members[2]}?" %></h1>
     <p>
       Find a time that works between now and Friday, and put a quick 20-min break on the calendar. Then get together and fill each other in on something you're focused on these days.
     </p>
@@ -32,7 +32,7 @@
 
     <p class="signature">Team love,
       <br>
-      Artsy
+      <%= ENV['COMPANY_NAME'] %>
     </p>
 
   </body>

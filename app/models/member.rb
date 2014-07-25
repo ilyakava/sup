@@ -23,7 +23,12 @@ class Member < ActiveRecord::Base
     too_long: ": you may be a part of at most %{count} groups." }
   validates_presence_of :name
   validates_presence_of :email
-  validates_format_of :email, :with => /@artsy|@art\.sy/
+  # The poor placement of this method is intentional
+  def self.email_regexp
+    s = ENV['COMPANY_MEMBER_EMAIL_REGEXP'] unless ENV['RAILS_ENV'] == 'test'
+    s ? Regexp.new(s) : /.*/
+  end
+  validates_format_of :email, :with => Member.email_regexp
 
   attr_accessible :name, :email, :group_ids, :left_out, :skip_meetings
   accepts_nested_attributes_for :groups

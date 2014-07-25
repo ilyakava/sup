@@ -32,13 +32,6 @@ class Meeting < ActiveRecord::Base
     end
   end
 
-  def self.trigger_weekly_debug_email
-    time_range = (3.days.ago..Time.now)
-    Meeting.where(created_at: time_range).each do |meeting|
-      MeetingMailer.new_meeting_debug(meeting).deliver
-    end
-  end
-
   def mark_members_not_left_out
     members.each { |m| m.update_attribute(:left_out, false) }
   end
