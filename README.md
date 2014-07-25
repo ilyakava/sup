@@ -58,7 +58,7 @@ COMPANY_MEMBER_EMAIL_REGEXP: "@initech|@inite\\.ch"
 
 ## Testing
 
-run `rspec . --tag ~speed:slow` to exclude the slow specs that check the consistency of the pairing algorithm
+run `rake fspec` to exclude the slow specs that check the consistency of the pairing algorithm, and `rake` to run all tests (several minutes).
 
 ## License
 
