@@ -59,3 +59,7 @@ COMPANY_MEMBER_EMAIL_REGEXP: "@initech|@inite\\.ch"
 ## Testing
 
 run `rspec . --tag ~speed:slow` to exclude the slow specs that check the consistency of the pairing algorithm
+
+## License
+
+MIT
