@@ -43,7 +43,6 @@ end
 group :development do
   gem 'annotated-rails'
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'pry'
 end
