@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 2.1.0
+notifications:
+  email:
+    recipients:
+      - ilya@artsymail.com
+    on_success: never
+    on_failure: always

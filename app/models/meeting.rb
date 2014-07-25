@@ -32,13 +32,6 @@ class Meeting < ActiveRecord::Base
     end
   end
 
-  def self.trigger_weekly_debug_email
-    time_range = (3.days.ago..Time.now)
-    Meeting.where(created_at: time_range).each do |meeting|
-      MeetingMailer.new_meeting_debug(meeting).deliver
-    end
-  end
-
   def mark_members_not_left_out
     members.each { |m| m.update_attribute(:left_out, false) }
   end
@@ -49,10 +42,6 @@ class Meeting < ActiveRecord::Base
 
   def pick_leader
     members.sample
-  end
-
-  def meeting_date_week_of_month
-    (meeting_date - meeting_date.beginning_of_month).to_i % 7
   end
 
   # A method for regarding the meetup from a person's perspective
@@ -73,6 +62,8 @@ class Meeting < ActiveRecord::Base
   end
 
   # TODO check calendars of members
+  # Note that this method should run before the sunday that
+  # the meeting should be scheduled for
   def self.choose_date(member_ids = [])
     return Date.parse("Monday") + 7.days + rand(5).days
   end
@@ -91,8 +82,6 @@ class Meeting < ActiveRecord::Base
   def cost_from_shared_groups
     group_ids = members.map { |member| member.groups.pluck(:id) }
     # calculates the cost for this triplet by comparing pairs within this triplet
-
-    # Cost::SharedGroup.cost_from_shared_groups(group_ids)
 
     group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
       pair_overlap = pairs_group_ids.first & pairs_group_ids.last

@@ -1,7 +1,7 @@
 <form action="<%= feedbacks_url %>" method="post">
 	<div id="comment-form">
 		<h2>Thank you!</h2>
-		<h3>Any comments or feedback to make S’UP at Artsy better?</h3>
+		<h3>Any comments or feedback to make S’UP at <%= ENV['COMPANY_NAME'] %> better?</h3>
 		<textarea name="comment" placeholder="Add a comment"></textarea>
 	    <input type="hidden" name="member_id" value="<%= params[:member_id] %>">
 		<input
