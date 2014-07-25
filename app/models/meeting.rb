@@ -44,10 +44,6 @@ class Meeting < ActiveRecord::Base
     members.sample
   end
 
-  def meeting_date_week_of_month
-    (meeting_date - meeting_date.beginning_of_month).to_i % 7
-  end
-
   # A method for regarding the meetup from a person's perspective
   # can be in either 1st or 3rd person. Supports referencing the
   # meeting as incomplete
@@ -66,6 +62,8 @@ class Meeting < ActiveRecord::Base
   end
 
   # TODO check calendars of members
+  # Note that this method should run before the sunday that
+  # the meeting should be scheduled for
   def self.choose_date(member_ids = [])
     return Date.parse("Monday") + 7.days + rand(5).days
   end
@@ -84,8 +82,6 @@ class Meeting < ActiveRecord::Base
   def cost_from_shared_groups
     group_ids = members.map { |member| member.groups.pluck(:id) }
     # calculates the cost for this triplet by comparing pairs within this triplet
-
-    # Cost::SharedGroup.cost_from_shared_groups(group_ids)
 
     group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
       pair_overlap = pairs_group_ids.first & pairs_group_ids.last
