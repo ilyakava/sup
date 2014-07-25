@@ -40,22 +40,6 @@ class Member < ActiveRecord::Base
     true
   end
 
-  def edges
-    met_members = meetings.map(&:members).flatten.map(&:email)
-    group_members = fellow_members.map(&:email)
-    met_members.concat(group_members).uniq
-  end
-
-  def edge_ids
-    met_members = meetings.map(&:members).flatten.map(&:id)
-    group_members = fellow_members.map(&:id)
-    met_members.concat(group_members).uniq
-  end
-
-  def fellow_members
-    groups.map(&:members).flatten - [self]
-  end
-
   def to_s
     name
   end
