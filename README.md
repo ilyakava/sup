@@ -5,25 +5,31 @@
 
 This is a web app for facilitating S'Ups (quick meetings) between the employees of a company.
 
-A Standup is a regular meeting between the members of a specialized team to discuss their team's goals, and priorities for achieving those goals. A S'Up is instead an informal and interdisciplinary standup, where members discuss what's up with their own work, or just in general.
+A Standup is a regular meeting between the members of a specialized team to discuss their team's goals, and priorities for achieving those goals. A S'Up (short for standup) is instead an informal and interdisciplinary standup, where members discuss what's up with their own work, or just in general.
 
-Like S'Up is short for standup. Hopefully, S'Up will help people form connections with their colleagues that they normally aren't nearby or working with, creating a lattice of connections throughout a whole un-fragmented company.
+## Why use the `sup` app to have S'ups?
+
+S'Ups help form connections between colleagues that normally aren't nearby or working with each other, creating a lattice of connections throughout a whole un-fragmented company.
+
+The interdisciplinary nature of the meetings often leads to creative conversations sparking ideas for new directions in research and product development. Remote workers especially appreciate S'up since it gives them a chance to have informal interactions with otherwise inaccessible members of the company, strengthening the sense of community.
+
+This app passively generates fresh [triads](http://www.culturesync.net/toolbox/intro-to-triads/) of company members to S'up every week. It does all the scheduling to make sure every member has a meeting with a coworker they are unlikely to have had a chance to chat casually with lately, and communicates this to everyone involved via email.
 
 ### Before S'Up
 
-*Here is a graph of a sample company's employees connected together via their **work team co-memberships**. The graph has **clear hubs**, and the number of bonds per employee (node) is unequal throughout.*
+Here is a graph of a sample company's employees connected together via their **work team co-memberships**. The graph has **clear hubs**, and the number of bonds per employee (node) is unequal throughout.
 
 ![sample image of a company graph](http://f.cl.ly/items/3e3B2f350a2b2s3O1z1T/sample_graph.png) [hi res here](http://f.cl.ly/items/0Z0g3K3l3t3h3Q1F1f1w/sample_graph.png)
 
 ### After S'Up
 
-*Here is a graph of a sample company's employees connected together via their **S'Up co-memberships** after 6 weeks. The graph is **distributed** and clustering is starting to disappear. You can see employees who signed up for S'Up later (bottom right corner) have yet to be completely subsumed by the plane of spaghetti.*
+Here is a graph of a sample company's employees connected together via their **S'Up co-memberships** after 6 weeks. The graph is **distributed** and clustering is starting to disappear. You can see employees who signed up for S'Up later (bottom right corner) have yet to be completely subsumed by the plane of spaghetti.
 
 ![sample image of a company after 6 weeks of S'Up](http://f.cl.ly/items/0u3e45142d0S3J0U143B/after.png) [hi res here](http://f.cl.ly/items/2t0F1U441j3B1v0J342M/after.png)
 
 ## App Experience Overview
 
-S'up contains a homepage which new users can sign up, edit their name/email and group membership, and also disable themselves from being included in S'ups temporarily in the case of a busy week.
+S'up contains a homepage where new users can sign up, edit their name/email and group memberships, and also disable themselves from being included in S'ups in the case of a busy week.
 
 ![Sup on the web gif](http://f.cl.ly/items/1f0e0K2y1W3X0f0o1q0l/sup_web2.gif)
 
@@ -93,7 +99,7 @@ Follow the instructions about [heroku scheduler](https://devcenter.heroku.com/ar
 
 Although the least frequent running choice is "Daily" on heroku, these jobs will actually be run on Friday, Sunday, and Saturday respectively (for info on why: look in `./lib/tasks/scheduler.rake`).
 
-With the configuration in the above table: S'ups are scheduled 12:30pm EST on Friday, email invitations to S'ups are sent 11am EST on Sundays, and S'up followups are sent 11am on Saturday. This app will work fine without followup emails scheduled, but by responding to followup emails accurately, the quality of S'ups will be greater.
+With the configuration in the above table: S'ups are scheduled 12:30pm EST on Friday, email invitations to S'ups are sent 11am EST on Sundays, and S'up followups are sent 11am EST on Saturday. This app will work fine without followup emails scheduled, but by responding to followup emails accurately, the quality of S'ups will be greater.
 
 ### Adding teams (Heroku)
 
@@ -105,7 +111,7 @@ Following the commented example in the `seeds.rb` file in the root directory, en
 
 ## Testing
 
-Run `rake fspec` to exclude the slow specs that check the consistency of the pairing algorithm, and `rake` to run all tests (several minutes).
+Run `rake fspec` to exclude the slow specs that check the convergence of the pairing algorithm, and `rake` to run all tests (several minutes).
 
 ## License
 
