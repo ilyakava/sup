@@ -89,7 +89,7 @@ COMPANY_MEMBER_EMAIL_REGEXP: "@initech|@inite\\.ch"
 
 ### Adding cron tasks (Heroku)
 
-Follow the instructions about [heroku scheduler](https://devcenter.heroku.com/articles/scheduler) only in the "Installing the add-on" and "Scheduling jobs" sections. Then, after selecting [your app in the heroku dashboard](https://dashboard.heroku.com/apps), and clicking on "Heroku Scheduler," and add the following three jobs:
+Once you've [deployed to heroku](https://devcenter.heroku.com/articles/getting-started-with-rails4), follow the instructions about [heroku scheduler](https://devcenter.heroku.com/articles/scheduler) only in the "Installing the add-on" and "Scheduling jobs" sections. Then, after selecting [your app in the heroku dashboard](https://dashboard.heroku.com/apps), and clicking on "Heroku Scheduler," and add the following three jobs:
 
 | Task                          | Dyno Size | Frequency | Last Run | Next Run  |
 |-------------------------------|-----------|-----------|----------|-----------|
@@ -103,11 +103,22 @@ With the configuration in the above table: S'ups are scheduled 12:30pm EST on Fr
 
 ### Adding teams (Heroku)
 
-Following the commented example in the `seeds.rb` file in the root directory, enter in all the teams at your company. Then run `heroku run db:seed`.
+Following the commented example in the `seeds.rb` file in the root directory, write some ruby code that will generate the teams at your company. Then run `heroku run db:seed`.
 
-## Contributing
+### Member Signup
+
+Visit your app (`heroku open`), and sign members of your company up, or link people to the site. Members will need to enter their name and email, and choose 1-5 work teams that they are a part of. These should be teams in which they are already a part of some formal standup, since no S'ups between members of the same work-team will be allowed.
+
+### Attend S'ups
+
+Since each S'up contains 3 people, remember that unless your company has an exact multiple of 3 employees signed up, not everyone will be a part of a S'up each week. However, it is very unlikely for anyone to be left out of S'up two weeks in a row.
+
+If things around the office get a bit hectic, any member can disable their participation in S'up via their member panel in the app.
+
+## Contributing and Reporting Bugs
 
 * Click here on this: [![Stories in Ready](https://badge.waffle.io/ilyakava/sup.png?label=ready&title=Ready)](https://waffle.io/ilyakava/sup) badge to check what needs to be done!
+* Click the 'Issues' button above on the right to log a bug or problem.
 
 ## Testing
 
