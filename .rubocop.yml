@@ -1,0 +1,21 @@
+AllCops:
+  Exclude:
+    - db/migrate/**
+
+Metrics/ClassLength:
+  Max: 109
+
+Metrics/CyclomaticComplexity:
+  Max: 7
+
+Metrics/LineLength:
+  Max: 403
+
+Metrics/MethodLength:
+  Max: 23
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+Style/Documentation:
+  Enabled: false

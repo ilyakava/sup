@@ -7,7 +7,7 @@ Sup::Application.load_tasks
 RSpec::Core::RakeTask.new(:spec)
 # Exclude slow tests
 RSpec::Core::RakeTask.new(:fspec) do |t|
-  t.rspec_opts = "--tag ~speed:slow"
+  t.rspec_opts = '--tag ~speed:slow'
 end
 
-task :default => :spec
+task default: :spec

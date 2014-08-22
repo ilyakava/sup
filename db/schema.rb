@@ -11,52 +11,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140725154022) do
+ActiveRecord::Schema.define(version: 20_140_725_154_022) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "feedbacks", force: true do |t|
-    t.text     "comment"
-    t.integer  "member_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'feedbacks', force: true do |t|
+    t.text 'comment'
+    t.integer 'member_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "group_members", force: true do |t|
-    t.integer  "member_id"
-    t.integer  "group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'group_members', force: true do |t|
+    t.integer 'member_id'
+    t.integer 'group_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "groups", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'groups', force: true do |t|
+    t.string 'name'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "meeting_members", force: true do |t|
-    t.integer  "member_id"
-    t.integer  "meeting_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'meeting_members', force: true do |t|
+    t.integer 'member_id'
+    t.integer 'meeting_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "meetings", force: true do |t|
-    t.date     "meeting_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "leader_id"
+  create_table 'meetings', force: true do |t|
+    t.date 'meeting_date'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
+    t.integer 'leader_id'
   end
 
-  create_table "members", force: true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "left_out"
-    t.boolean  "skip_meetings", default: false, null: false
+  create_table 'members', force: true do |t|
+    t.string 'name'
+    t.string 'email'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
+    t.boolean 'left_out'
+    t.boolean 'skip_meetings', default: false, null: false
   end
 
 end
