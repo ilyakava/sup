@@ -10,4 +10,9 @@ RSpec::Core::RakeTask.new(:fspec) do |t|
   t.rspec_opts = '--tag ~speed:slow'
 end
 
-task default: :spec
+desc 'Run RuboCop'
+task :rubocop do
+  sh 'bundle exec rubocop'
+end
+
+task default: [:spec, :rubocop]
