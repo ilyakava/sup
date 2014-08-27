@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - db/migrate/**
+    - vendor/**
 
 Metrics/ClassLength:
   Max: 109
