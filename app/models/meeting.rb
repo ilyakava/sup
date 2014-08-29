@@ -1,8 +1,7 @@
 class Meeting < ActiveRecord::Base
-
   has_many :meeting_members, dependent: :destroy
   has_many :members, through: :meeting_members
-  belongs_to :leader, :class_name => "Member"
+  belongs_to :leader, class_name: 'Member'
 
   attr_accessible :member_ids, :meeting_date, :leader_id
   accepts_nested_attributes_for :members
@@ -13,8 +12,8 @@ class Meeting < ActiveRecord::Base
 
   # Conveniently instantiate many meetings
   def self.multiple_new_from_array(as)
-    e = "Input must be an array of arrays length 3 containing Member ids!"
-    raise e unless (as.is_a? Array) && (as[0].is_a? Array) && (as[0][0].is_a? Numeric)
+    e = 'Input must be an array of arrays length 3 containing Member ids!'
+    fail e unless (as.is_a? Array) && (as[0].is_a? Array) && (as[0][0].is_a? Numeric)
     as.map { |a| Meeting.new(member_ids: a) }
   end
 
@@ -50,22 +49,22 @@ class Meeting < ActiveRecord::Base
   def ego_to_s(whoami, excluded_members = [], person = 1)
     pruned = members - excluded_members
     if excluded_members.count == 3
-      person == 1 ? "None of us" : "No one"
+      person == 1 ? 'None of us' : 'No one'
     elsif pruned.count == 3
-      person == 1 ? "We all" : "Everyone"
+      person == 1 ? 'We all' : 'Everyone'
     # either none, all, or 1 person may be left out of a meeting
     elsif excluded_members.first == whoami
-      pruned.map(&:to_s).join(" and ")
+      pruned.map(&:to_s).join(' and ')
     else
-      "#{(pruned - [whoami]).first} and #{person == 1 ? "I" : "you"}"
+      "#{(pruned - [whoami]).first} and #{person == 1 ? 'I' : 'you'}"
     end
   end
 
-  # TODO check calendars of members
+  # TODO: check calendars of members
   # Note that this method should run before the sunday that
   # the meeting should be scheduled for
-  def self.choose_date(member_ids = [])
-    return Date.parse("Monday") + 7.days + rand(5).days
+  def self.choose_date(_member_ids = [])
+    Date.parse('Monday') + 7.days + rand(5).days
   end
 
   def pick_meeting_date_if_none
@@ -86,7 +85,7 @@ class Meeting < ActiveRecord::Base
     group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
       pair_overlap = pairs_group_ids.first & pairs_group_ids.last
       cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * Cost::Helper::SHARED_GROUP
-      acc += cost_per_pair
+      acc + cost_per_pair
     end
   end
 
@@ -99,9 +98,9 @@ class Meeting < ActiveRecord::Base
         m = Meeting.find(id)
         weeks_ago = ((Time.now - m.meeting_date.to_time) / 1.week).floor
         cost_per_meeting = Cost::Helper.shared_meeting_n_weeks_ago(weeks_ago)
-        acc2 += cost_per_meeting
+        acc2 + cost_per_meeting
       end
-      acc += cost_per_pair
+      acc + cost_per_pair
     end
   end
 
@@ -126,20 +125,21 @@ class Meeting < ActiveRecord::Base
       # disqualify meeting rounds with people belonging to several simultaneous
       # meetings this condition is not met the majority of times, so no need
       # to increment trials_since_best_cost_beaten
-      exit = if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
-        cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a += e.cost.to_f }
-        # check if this meeting is the best so far
-        if curr_best_cost > cum_cost
-          curr_best_cost = cum_cost
-          curr_best_meeting_round = meeting_round
-          trials_since_best_cost_beaten = 0
+      exit =
+        if meeting_round.flatten.uniq.length == (target_num_meetings * 3)
+          cum_cost = Meeting.multiple_new_from_array(meeting_round).reduce(0) { |a, e| a + e.cost.to_f }
+          # check if this meeting is the best so far
+          if curr_best_cost > cum_cost
+            curr_best_cost = cum_cost
+            curr_best_meeting_round = meeting_round
+            trials_since_best_cost_beaten = 0
+          else
+            trials_since_best_cost_beaten += 1
+          end
+          cum_cost # cumulative cost of 0 for meetings is optimal (the best solution possible)
         else
-          trials_since_best_cost_beaten += 1
+          1 # failure exit code (this value is not significant)
         end
-        cum_cost # cumulative cost of 0 for meetings is optimal (the best solution possible)
-      else
-        1 # failure exit code (this value is not significant)
-      end
       # conditions for a successful meeting being found
       break if exit.zero? || (trials_since_best_cost_beaten > 10 && !curr_best_meeting_round.nil?)
     end

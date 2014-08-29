@@ -56,7 +56,7 @@ Sup::Application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.action_controller.asset_host = "http://#{ENV['PRODUCTION_DOMAIN']}"
-  config.action_mailer.default_url_options = { :host => ENV['PRODUCTION_DOMAIN'] }
+  config.action_mailer.default_url_options = { host: ENV['PRODUCTION_DOMAIN'] }
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.

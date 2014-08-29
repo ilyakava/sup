@@ -7,7 +7,12 @@ Sup::Application.load_tasks
 RSpec::Core::RakeTask.new(:spec)
 # Exclude slow tests
 RSpec::Core::RakeTask.new(:fspec) do |t|
-  t.rspec_opts = "--tag ~speed:slow"
+  t.rspec_opts = '--tag ~speed:slow'
 end
 
-task :default => :spec
+desc 'Run RuboCop'
+task :rubocop do
+  sh 'bundle exec rubocop'
+end
+
+task default: [:rubocop, :spec]

@@ -52,7 +52,7 @@ module Cost
       group_ids.combination(2).reduce(0) do |acc, pairs_group_ids|
         pair_overlap = pairs_group_ids.first & pairs_group_ids.last
         cost_per_pair = pair_overlap.empty? ? 0 : pair_overlap.count * Cost::SHARED_GROUP
-        acc += cost_per_pair
+        acc + cost_per_pair
       end
     end
 
@@ -102,7 +102,7 @@ module Cost
       @member_id_to_non_membered_triplet_indexes = Hash[
         @member_ids.map do |id|
           allowed_indexes = []
-          res = all_triplets_flat.each_with_index.map { |e,i| e == id ? nil : (i / 3) }
+          res = all_triplets_flat.each_with_index.map { |e, i| e == id ? nil : (i / 3) }
           until res.empty?
             take = res.pop(3)
             allowed_indexes << take.first if take.none? { |i| i.nil? }
@@ -126,14 +126,14 @@ module Cost
     # member_ids with the most restrictions appear in the least number
     # of spots in @member_id_to_non_membered_triplet_indexes, and thereby
     # have the greatest number of allowable other triplets to appear with
-    def best_triplets_to_start(target_num_triplets)
+    def best_triplets_to_start(_target_num_triplets)
       ttnr = @tf.triplets_to_num_restrictions
       m = ttnr.values.max
       # an easy way to find the few hundred triplets that have the most
       # allowances (since array intersection is quite slow)
       counter, hardest2pair_triplets = 0, {}
       until hardest2pair_triplets.count > 50 || hardest2pair_triplets.count == ttnr.count
-        hardest2pair_triplets = Hash[ttnr.find_all { |k, v| v >= (m - counter) }]
+        hardest2pair_triplets = Hash[ttnr.select { |_k, v| v >= (m - counter) }]
         counter += 1
       end
       # map member choices to the number of additional choices for triplets that they have
@@ -148,24 +148,26 @@ module Cost
     # depth first search for valid triplet groupings
     def level(target_num_triplets, yielder, seed, arr_of_trips)
       if arr_of_trips.length == target_num_triplets
-        print "."
+        print '.'
         yielder << arr_of_trips # The final case is a side-effect
       else
         # pick another triplet for the group that does not contain any member_ids
         # that are already in the current group of triplets. This is ensured by
         # intersecting the arrays of allowed indexes in the hash h, with some memoization
         h, members = @member_id_to_non_membered_triplet_indexes, arr_of_trips.flatten.sort
-        valid_addition_indexes = if h[(key = members.to_s)].nil?
-          idxs = members.map { |id| h[id] }
-          h[key] = Performant::Array.memory_efficient_intersect(idxs)
-        else
-          h[key]
-        end
+        valid_addition_indexes =
+          if h[(key = members.to_s)].nil?
+            idxs = members.map { |id| h[id] }
+            h[key] = Performant::Array.memory_efficient_intersect(idxs)
+          else
+            h[key]
+          end
         # Only use 1/NUM_SEEDS of the deepest branches unless we have nearly collected enough triplets
-        valid_addition_indexes_subset = if (target_num_triplets - arr_of_trips.length) > 2
-          which_VAI_to_explore_now = (1...valid_addition_indexes.length).to_a.select { |idx| idx % NUM_SEEDS == seed }
-          which_VAI_to_explore_now.map { |idx| valid_addition_indexes[idx] }
-        end
+        valid_addition_indexes_subset =
+          if (target_num_triplets - arr_of_trips.length) > 2
+            which_vai_to_explore_now = (1...valid_addition_indexes.length).to_a.select { |idx| idx % NUM_SEEDS == seed }
+            which_vai_to_explore_now.map { |idx| valid_addition_indexes[idx] }
+          end
         next_indexes = valid_addition_indexes_subset || valid_addition_indexes
         next_indexes.each do |addition_index|
           trip = @all_triplets[addition_index]

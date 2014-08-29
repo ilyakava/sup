@@ -1,26 +1,25 @@
 class Member < ActiveRecord::Base
-
   MAX_GROUPS = 5
 
   has_many(
     :group_members,
-    :class_name => "GroupMember",
-    :foreign_key => :member_id,
-    :primary_key => :id,
-    :dependent => :destroy
+    class_name: 'GroupMember',
+    foreign_key: :member_id,
+    primary_key: :id,
+    dependent: :destroy
   )
   has_many(
     :groups,
-    :through => :group_members,
-    :source => :group
+    through: :group_members,
+    source: :group
   )
 
-  has_many :meeting_members, :dependent => :destroy
+  has_many :meeting_members, dependent: :destroy
   has_many :meetings, through: :meeting_members
 
   validates :groups, length: { in: 1..MAX_GROUPS,
-    too_short: ": you must be a part of at least %{count} group.",
-    too_long: ": you may be a part of at most %{count} groups." }
+                               too_short: ': you must be a part of at least %{count} group.',
+                               too_long: ': you may be a part of at most %{count} groups.' }
   validates_presence_of :name
   validates_presence_of :email
   # The poor placement of this method is intentional
@@ -28,7 +27,7 @@ class Member < ActiveRecord::Base
     s = ENV['COMPANY_MEMBER_EMAIL_REGEXP'] unless ENV['RAILS_ENV'] == 'test'
     s ? Regexp.new(s) : /.*/
   end
-  validates_format_of :email, :with => Member.email_regexp
+  validates_format_of :email, with: Member.email_regexp
 
   attr_accessible :name, :email, :group_ids, :left_out, :skip_meetings
   accepts_nested_attributes_for :groups
@@ -45,7 +44,7 @@ class Member < ActiveRecord::Base
   end
 
   def first_name
-    name =~ /\s/ ? name.split(" ").first : name
+    name =~ /\s/ ? name.split(' ').first : name
   end
 
   def self.active

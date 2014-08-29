@@ -45,6 +45,7 @@ group :development do
   gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'pry'
+  gem 'rubocop'
 end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -58,4 +59,4 @@ gem 'protected_attributes'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-ruby "2.1.0"
+ruby '2.1.0'
