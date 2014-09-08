@@ -40,6 +40,28 @@ class MembersController < ApplicationController
     redirect_to root_path
   end
 
+  def graph
+    dict = {}
+    edges = []
+    node_data = []
+    # create dict used by edge lines and write node lines
+    Member.active.each_with_index do |member, i|
+      switch_node_name = i
+      dict[member.id] = switch_node_name
+      node_data << { name: member.name }
+    end
+
+    # create edge lines
+    Group.all.each do |group|
+      pairwise_combos = group.members.active.pluck(:id).combination(2)
+      pairwise_combos.each do |c|
+        edges << [dict[c.first], dict[c.last]]
+      end
+    end
+    @node_data_str = node_data.to_json.html_safe
+    @link_data_str = edges.to_json.html_safe
+  end
+
   private
 
   def member_params

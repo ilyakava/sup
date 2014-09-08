@@ -7,9 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<h1 id="logo">
-		<a href="/"><span id="app-name">S'UP</span> at <%= ENV['COMPANY_NAME'] %></a>
-	</h1>
+	<%= render "application/banner" %>
 
 <%= yield %>
 

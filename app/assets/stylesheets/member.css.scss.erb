@@ -2,22 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-// Reset Css
-h1, div, span, a, body, li, ul {
-	text-decoration: none;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	border: none;
-}
-a:visited {
-	color: black;
-}
-*:focus {
-	outline: 0;
-}
-// end of reset css
-
 $serif: "adobe-garamond-pro";
 $sans-serif: "AvantGardeGothicITCW01D 731075","Helvetica Neue",Arial,Helvetica,sans-serif;
 $gray: #e5e5e5;
@@ -40,7 +24,7 @@ $chevron-right: url(<%= asset_path 'chevron_right.png' %>);
 body {
 	width: 900px;
 	padding: 40px 0px;
-	margin: auto;
+	margin: 30px auto 0px auto;
 
 	div#error_explanation {
 		margin-left: 10px;
@@ -189,4 +173,11 @@ body {
 		font-size: 17px;
 		font-family: $serif;
 	}
+}
+
+// For D3
+svg#d3vis {
+	position: absolute;
+	left: 0;
+	top: 0;
 }
