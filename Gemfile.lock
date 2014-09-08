@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/sealocal/figaro.git
+  revision: 799f93b578e0727a86f7df0f3753774434a2161d
+  specs:
+    figaro (1.0.0.rc1)
+      thor (~> 0.14)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -46,9 +53,6 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
-    figaro (0.7.0)
-      bundler (~> 1.0)
-      rails (>= 3, < 5)
     hike (1.2.3)
     htmlentities (4.3.1)
     i18n (0.6.9)
@@ -180,7 +184,7 @@ DEPENDENCIES
   annotated-rails
   coffee-rails (~> 4.0.0)
   database_cleaner
-  figaro
+  figaro!
   jbuilder (~> 1.2)
   jquery-rails
   nokogiri
