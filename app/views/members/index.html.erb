@@ -1,7 +1,9 @@
 <div class="black-button"><%= link_to "Add a new email", action: "new" %></div>
+<div class="info">Members who have requested to be excluded from S'up are <span>grayed out.</span></div>
 
 <div class="member-list">
   <% @members.each do |member| %>
-    <%= link_to member.email, { action: "edit", id: member }, class: "member-list-item" %>
+	<% status = (member.skip_meetings ? 'inactive' : 'active') %>
+    <%= link_to member.email, { action: "edit", id: member }, class: "member-list-item #{status}" %>
   <% end %>
 </div>

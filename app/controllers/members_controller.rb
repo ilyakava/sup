@@ -15,7 +15,7 @@ class MembersController < ApplicationController
         # Tell the UserMailer to send a welcome Email after save
         MemberMailer.welcome_email(@member).deliver
 
-        format.html { redirect_to(root_path, notice: 'Member was successfully created.') }
+        format.html { redirect_to(action: :index, notice: 'Member was successfully created.') }
         format.json { render json: @member, status: :created, location: @member }
       else
         format.html { render action: 'new' }
@@ -31,13 +31,13 @@ class MembersController < ApplicationController
   def update
     @member = Member.find(params[:id])
     @member.update_attributes(params[:member])
-    redirect_to root_path
+    redirect_to action: :index
   end
 
   def destroy
     @member = Member.find(params[:id])
     @member.destroy!
-    redirect_to root_path
+    redirect_to action: :index
   end
 
   def graph
