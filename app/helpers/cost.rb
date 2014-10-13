@@ -16,7 +16,7 @@ module Cost
       @members_to_last_week_meeting_members = Hash[Member.active.map do |m|
         meeting_ids = m.meetings.map do |meeting|
           weeks_ago = ((Time.now - meeting.meeting_date.to_time) / 1.week).floor
-          meeting.id if weeks_ago <= 2 # pretty strict
+          meeting.id if weeks_ago <= 4 # pretty strict
         end
         [m.id, meeting_ids.compact]
       end]
