@@ -20,6 +20,7 @@ gem 'nokogiri'
 # has a more performant array intersection method
 gem 'picky'
 gem 'timecop'
+gem 'rspec-rails'
 
 gem 'rails_12factor', group: :production
 
@@ -42,7 +43,6 @@ end
 
 group :development do
   gem 'annotated-rails'
-  gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'pry'
   gem 'rubocop'
