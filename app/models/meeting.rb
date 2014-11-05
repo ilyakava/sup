@@ -105,7 +105,8 @@ class Meeting < ActiveRecord::Base
   end
 
   def self.schedule_all
-    max_target_num_meetings = Member.active.count / 3
+    # Convergence is much quicker when there is at least 1 left over member
+    max_target_num_meetings = (Member.active.count - 1) / 3
     best_meetings = nil
     max_target_num_meetings.downto(1) do |target_num_meetings|
       best_meetings = Meeting.find_best_meeting(target_num_meetings)
