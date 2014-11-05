@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - db/migrate/**/*
     - vendor/**/*
+    - db/schema.rb
 
 Metrics/ClassLength:
   Max: 109
