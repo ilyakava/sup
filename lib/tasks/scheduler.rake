@@ -16,6 +16,15 @@ task trigger_followup_email: :environment do
   end
 end
 
+desc 'mail admin informational email'
+task send_weekly_admin_email: :environment do
+  if Time.now.saturday? && ENV['ADMIN_EMAIL']
+    puts 'Sending weekly admin email...'
+    AdminMailer.weekly.deliver
+    puts 'Done sending weekly admin email...'
+  end
+end
+
 desc 'mail all meetings for the week to meeting members'
 task trigger_weekly_email: :environment do
   if Time.now.sunday?

@@ -41,12 +41,11 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-group :development do
-  gem 'annotated-rails'
-  gem 'database_cleaner'
-  gem 'pry'
-  gem 'rubocop'
-end
+gem 'annotated-rails'
+gem 'database_cleaner'
+gem 'pry'
+gem 'rubocop'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'protected_attributes'
