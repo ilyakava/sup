@@ -87,19 +87,28 @@ COMPANY_MEMBER_EMAIL_REGEXP: "@initech|@inite\\.ch"
 
 - This is a [regular expression](http://rubular.com/) that will be used to accept or reject people signing up for your app based on their email address. This one will only allow members to join with email addresses like `milton@initech.com` and `peter@inite.ch`. Note how escaping the literal period `\\.` takes two backslashes if you are using figaro (because of yml file parsing). Not providing this environment variable will lead to all email addresses being valid.
 
+Another optional environment variable is:
+
+```
+ADMIN_EMAIL: "bill@initech.com"
+```
+
+This address will get weekly email reports of which meetings are scheduled, and what comments people are leaving when confirming their S'up.
+
 ### Adding cron tasks (Heroku)
 
 Once you've [deployed to heroku](https://devcenter.heroku.com/articles/getting-started-with-rails4), follow the instructions about [heroku scheduler](https://devcenter.heroku.com/articles/scheduler) only in the "Installing the add-on" and "Scheduling jobs" sections. Then, after selecting [your app in the heroku dashboard](https://dashboard.heroku.com/apps), and clicking on "Heroku Scheduler," and add the following three jobs:
 
-| Task                          | Dyno Size | Frequency | Last Run | Next Run  |
-|-------------------------------|-----------|-----------|----------|-----------|
-| `rake schedule_meetings`      | 1X        | Daily     | never    | 14:30 UTC |
-| `rake trigger_weekly_email`   | 1X        | Daily     | never    | 15:00 UTC |
-| `rake trigger_followup_email` | 1X        | Daily     | never    | 15:00 UTC |
+| Task                           | Dyno Size | Frequency | Last Run | Next Run  |
+|--------------------------------|-----------|-----------|----------|-----------|
+| `rake schedule_meetings`       | 1X        | Daily     | never    | 13:00 UTC |
+| `rake trigger_weekly_email`    | 1X        | Daily     | never    | 15:00 UTC |
+| `rake trigger_followup_email`  | 1X        | Daily     | never    | 15:00 UTC |
+| `rake send_weekly_admin_email` | 1X        | Daily     | never    | 16:00 UTC |
 
-Although the least frequent running choice is "Daily" on heroku, these jobs will actually be run on Friday, Sunday, and Saturday respectively (for info on why: look in `./lib/tasks/scheduler.rake`).
+Although the least frequent running choice is "Daily" on heroku, these jobs will actually be run on Friday, Sunday, Saturday, and Sunday respectively (for info on why: look in `./lib/tasks/scheduler.rake`).
 
-With the configuration in the above table: S'ups are scheduled 12:30pm EST on Friday, email invitations to S'ups are sent 11am EST on Sundays, and S'up followups are sent 11am EST on Saturday. This app will work fine without followup emails scheduled, but by responding to followup emails accurately, the quality of S'ups will be greater.
+With the configuration in the above table: S'ups are scheduled 8am EST on Friday, email invitations to S'ups are sent 10am EST on Sundays, S'up followups are sent 10am EST on Saturday, and the admin email is sent 11am on Sunday. This app will work fine without followup emails scheduled, but by responding to followup emails accurately, the quality of S'up matchings will be higher. The first two tasks are the bare minimum for the app to function.
 
 ### Adding teams (Heroku)
 

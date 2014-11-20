@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type="text/css">
+      body#monitor h1 {
+        font-family: 'times new roman', serif;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0px; }
+      body#monitor p {
+        margin: 15px 0px; }
+      body#monitor .section-title {
+        font-family: arial, sans-serif;
+        font-size: 20px;
+        font-weight: bold; }
+      body#monitor .comment-list, body#monitor .meeting-list {
+        margin-top: 20px;
+        width: 600px; }
+      body#monitor .comment-list-item, body#monitor .meeting-list-item {
+        color: black;
+        width: 98%;
+        display: block;
+        border-top: 2px solid #e5e5e5;
+        padding: 10px;
+        font-weight: 600; }
+      body#monitor .comment-list-item:last-child, body#monitor .meeting-list-item:last-child {
+        border-bottom: 2px solid #e5e5e5; }
+    </style>
+  </head>
+  <body id="monitor">
+    <h1>S'UP Monitor. Week <%= @uptime_weeks %>.</h1>
+
+    <% comment_text = @feedbacks.empty? ? "No" : @feedbacks.count %>
+    <h2 class="section-title"><%= comment_text %> <%= @feedbacks.count == 1 ? 'comment' : 'comments' %> from last week</h2>
+    <div class="comment-list">
+      <% @feedbacks.each do |feedback| %>
+        <div class="comment-list-item">
+          <%= "#{feedback.comment.inspect} - #{feedback.member.to_s} (#{feedback.id})" %>
+        </div>
+      <% end %>
+    </div>
+
+    <h2 class="section-title"><%= 3 * @meetings.count %> out of <%= @member_count %> active members scheduled for <%= @meetings.count %> meetings this week</h2>
+    <div class="meeting-list">
+      <% @meetings.each do |meeting| %>
+        <div class="meeting-list-item">
+          <% names = meeting.members.map(&:to_s).join(', ') %>
+          <%= "#{meeting.cost}: #{names} (#{meeting.id})" %>
+        </div>
+      <% end %>
+    </div>
+
+  </body>
+</html>
