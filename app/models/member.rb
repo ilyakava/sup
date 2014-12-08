@@ -22,6 +22,7 @@ class Member < ActiveRecord::Base
                                too_long: ': you may be a part of at most %{count} groups.' }
   validates_presence_of :name
   validates_presence_of :email
+  validates_uniqueness_of :email
   # The poor placement of this method is intentional
   def self.email_regexp
     s = ENV['COMPANY_MEMBER_EMAIL_REGEXP'] unless ENV['RAILS_ENV'] == 'test'
