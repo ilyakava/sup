@@ -1,0 +1,36 @@
+@import 'common'
+
+.page-header
+  z-index: 100
+  background: white
+  color: black
+  padding: 10px
+  line-height: 31px
+  +box-shadow(0 1px 5px rgba(black, 0.2))
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  > a
+    font-weight: bold
+    text-transform: uppercase
+    font-family: sans-serif
+  a
+    color: black
+  > nav
+    display: inline-block
+    margin-left: 1em
+    > a
+      margin: 0 1em
+      font-family: sans-serif
+      text-transform: uppercase
+      font-weight: bold
+      font-size: 13px
+      color: #333
+
+.page-header-logo-link
+  display: inline-block
+  width: 31px
+  height: 31px
+  background: transparent url('/../assets/images/artsy_mark_purple.png') center center no-repeat
+  text-indent: -99999px
