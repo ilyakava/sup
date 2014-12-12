@@ -10,9 +10,18 @@ body
   width: 900px
   padding: 40px 0px
   margin: 30px auto 0px auto
+  text-rendering: optimizeLegibility
+  +garamond()
+  +font-smoothing(antialiased)
 
 a
   color: black
   text-decoration: none
   &:visited
     color: black
+
+.avant-garde-header
+  +avant-garde()
+  margin: 20px 0
+  font-size: 13px
+  text-align: center

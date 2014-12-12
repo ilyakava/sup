@@ -1,16 +1,23 @@
 @import 'compass/css3'
 @import 'compass/utilities/general/clearfix'
 
-$serif: "adobe-garamond-pro"
-$sans-serif: "AvantGardeGothicITCW01D 731075", "Helvetica Neue", Arial, Helvetica, sans-serif
-
-// Colors
 $gray: #e5e5e5
-$dark-gray: #aaa
 $purple: #6a0bc1
+
 $chevron-right: url(asset_path('chevron_right.png'))
 
-@mixin sans-serif
-  font-family: $sans-serif
-  font-weight: 500
-  letter-spacing: 2px
+@mixin avant-garde
+  font-family: 'ITC Avant Garde Gothic W04', 'Avant Garde', sans-serif
+  text-transform: uppercase
+  letter-spacing: 1px
+
+@mixin garamond
+  font-family: 'Adobe Garamond W08', 'Garamond', serif
+
+@mixin font-smoothing($value: antialiased)
+  @if $value == antialiased
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+  @else
+    -webkit-font-smoothing: subpixel-antialiased
+    -moz-osx-font-smoothing: auto

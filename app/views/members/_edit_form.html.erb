@@ -1,7 +1,6 @@
 <% if member.errors.any? %>
   <div id="error_explanation">
     <h3><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h3>
- 
     <ul class="error-list">
     <% member.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
@@ -10,16 +9,12 @@
   </div>
 <% end %>
 
-<div class="input-box-container">
-  <div class="input-box">
-    <label>Name</label>
-    <input type="text" name="member[name]" value="<%= member.name %>">
-  </div>
+<div class="stacked-form">
+  <label class='avant-garde-label' for='member[name]'>Name</label>
+  <input type="text" class='bordered-input' name="member[name]" value="<%= member.name %>" placeholder='Your Name'>
 
-  <div class="input-box">
-    <label>Email</label>
-    <input type="text" name="member[email]" value="<%= member.email %>">
-  </div>
+  <label class='avant-garde-label' for='member[email]'>Email</label>
+  <input type="text" class='bordered-input' name="member[email]" value="<%= member.email %>" placeholder='Your Email'>
 
   <div class="check-box">
     <label>
@@ -34,9 +29,7 @@
   </div>
 </div>
 
-<div class="input-box-container">
-  <h3>Choose up to <%= Member::MAX_GROUPS %> groups that you are a part of, and already have a formal standup with.</h3>
-</div>
+<h3 class='avant-garde-header'>Choose up to <%= Member::MAX_GROUPS %> groups that you are a part of, and already have a formal standup with.</h3>
 
 <div class="check-box-container">
   <% Group.all.each do |group| %>
@@ -57,6 +50,5 @@
    name="authenticity_token"
    type="hidden"
    value="<%= form_authenticity_token %>">
-<div class="black-button">
-  <input type="submit" value="Save">
-</div>
+
+<%= button_tag 'Save', class: 'black-button button--block' %>

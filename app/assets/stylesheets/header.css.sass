@@ -1,32 +1,27 @@
 @import 'common'
 
+#logo
+  padding-bottom: 20px
+  font-size: 27px
+
 .page-header
-  z-index: 100
-  background: white
-  color: black
-  padding: 10px
-  line-height: 31px
-  +box-shadow(0 1px 5px rgba(black, 0.2))
+  +avant-garde()
   position: fixed
   top: 0
   left: 0
-  width: 100%
-  > a
-    font-weight: bold
-    text-transform: uppercase
-    font-family: sans-serif
-  a
-    color: black
+  right: 0
+  background: white
+  border-bottom: 1px solid rgba(black, 0.1)
+  z-index: 100
   > nav
-    display: inline-block
-    margin-left: 1em
     > a
-      margin: 0 1em
-      font-family: sans-serif
-      text-transform: uppercase
-      font-weight: bold
+      display: inline-block
+      padding: 16px 10.5px 14px 10.5px
       font-size: 13px
-      color: #333
+      color: black
+      +transition(color, 0.25s)
+      &:hover
+        color: $purple
 
 .page-header-logo-link
   display: inline-block

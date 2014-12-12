@@ -1,7 +1,6 @@
 <header class='page-header'>
-  <a href="/"><span id="app-name">S'UP</span> at <%= ENV['COMPANY_NAME'] %></a>
   <nav>
-    <a href="/">Home</a>
-    <a href="/members">Member List</a>
+    <%= link_to "S'UP at #{ENV['COMPANY_NAME'] || 'Artsy'}", :root %>
+    <%= link_to 'Member List', members_path %>
   </nav>
 </header>
