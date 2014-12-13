@@ -1,0 +1,31 @@
+@import 'common'
+
+#logo
+  padding-bottom: 20px
+  font-size: 27px
+
+.page-header
+  +avant-garde()
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  background: white
+  border-bottom: 1px solid rgba(black, 0.1)
+  z-index: 100
+  > nav
+    > a
+      display: inline-block
+      padding: 16px 10.5px 14px 10.5px
+      font-size: 13px
+      color: black
+      +transition(color, 0.25s)
+      &:hover
+        color: $purple
+
+.page-header-logo-link
+  display: inline-block
+  width: 31px
+  height: 31px
+  background: transparent url('/../assets/images/artsy_mark_purple.png') center center no-repeat
+  text-indent: -99999px
