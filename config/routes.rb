@@ -9,4 +9,5 @@ Sup::Application.routes.draw do
 
   resources :meetings, only: [:edit, :update]
   resources :feedbacks, only: [:new, :create]
+  resources :team, only: :index
 end
