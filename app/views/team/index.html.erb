@@ -1,0 +1,30 @@
+<h1 class='avant-garde-header'>#WIP</h1>
+
+<input class='js-member-filter bordered-input member-filter' placeholder='Search' autofocus>
+
+<div id='groups' class='groups'>
+  <% @groups.each do |group| %>
+    <% if group.members.length > 0 %>
+      <%= content_tag_for :div, group do %>
+
+        <h3 class='avant-garde-header'><%= group.name %></h3>
+
+        <% group.members.each do |member| %>
+          <%= content_tag_for :li, member do %>
+            <%= image_tag member.avatar(size: 100), class: 'member-image' %>
+
+            <%= member.name %>
+
+            <% member.email.split('@').tap do |name, domain| %>
+              <%= link_to "#{name}<span class='member-email-domain'>@#{domain}</span>".html_safe, "mailto:#{member.email}", class: 'member-email' %>
+            <% end %>
+
+            <div class='member-hidden-criteria' style='display: none;'>
+              <%= group.name %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
