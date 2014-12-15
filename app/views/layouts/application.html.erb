@@ -7,8 +7,15 @@
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
-  	<%= render "application/banner" %>
+  <body data-controller="<%= controller.controller_path %>" data-action="<%= controller.action_name %>">
+    <header class='page-header'>
+      <nav>
+        <%= link_to "S'UP at #{ENV['COMPANY_NAME'] || 'Artsy'}", :root %>
+        <%= link_to 'Member List', members_path %>
+        <%= link_to 'Team Navigator', team_index_path %>
+      </nav>
+    </header>
+
     <%= yield %>
   </body>
 </html>
