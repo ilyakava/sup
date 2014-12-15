@@ -1,13 +1,29 @@
 @import 'common'
 
-.group
-  border-top: 1px solid black
+.member-filter
+  display: block
+  margin: auto
+
+.groups
   margin: 20px 0
+
+.group
+  border-top: 1px solid #333
+  padding: 20px 0
   text-align: center
+  background-color: white
+  +transition(opacity, 0.5s, background-color, 0.5s)
+  &[data-state='inactive']
+    +opacity(0.25)
+  &[data-state='active']
+    background-color: #ffe
+  > h3
+    margin: 0
+
 
 .member
   display: inline-block
-  margin: 20px
+  margin: 20px 20px 0 20px
 
 .member-image
   display: block

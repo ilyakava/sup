@@ -1,5 +1,5 @@
 class TeamController < ApplicationController
   def index
-    @groups = Group.all.includes(:members)
+    @groups = Group.includes(:members)
   end
 end
