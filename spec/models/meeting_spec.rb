@@ -183,7 +183,7 @@ describe 'overall meeting scheduling' do
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now
           Meeting.schedule_all
-          expect(Meeting.count > 10).to be_true
+          expect(Meeting.count > 10).to be_truthy
           puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
         end
       end
@@ -208,7 +208,7 @@ describe 'overall meeting scheduling' do
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now
           Meeting.schedule_all
-          expect(Meeting.count > 10).to be_true
+          expect(Meeting.count > 10).to be_truthy
           puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
         end
       end
@@ -218,7 +218,7 @@ end
 
 describe 'Meeting::choose_date' do
   it 'always returns a date' do
-    expect(Meeting.choose_date([1, 2, 3]).is_a? Date).to be_true
+    expect(Meeting.choose_date([1, 2, 3]).is_a? Date).to be_truthy
   end
 end
 
