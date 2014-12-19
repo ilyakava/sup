@@ -7,6 +7,11 @@ notifications:
     - ilya@artsymail.com
     on_success: never
     on_failure: always
+addons:
+  postgresql: '9.3'
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - cp config/database.yml.travis config/database.yml
 script: bundle exec rake fspec
 deploy:
   provider: heroku
