@@ -1,9 +1,17 @@
 language: ruby
 rvm:
-  - 2.1.0
+- 2.1.5
 notifications:
   email:
     recipients:
-      - ilya@artsymail.com
+    - ilya@artsymail.com
     on_success: never
     on_failure: always
+script: bundle exec rake fspec
+deploy:
+  provider: heroku
+  api_key:
+    secure: GXevZgGpL2Bd7RbjypHC+PMCNNHERkZ086CHr66LNM4cNp5DRx9UW8pAhbv0tIN5XW54OLCVyyFSRuqM71qoxJ53QyGMrhNcihugWkNODY81lBtRSxAb6aNzH1Edt19iEfYbfPq2xc7YqaoNyPELgyGfpB85mm/1HNLZFgcjiV4=
+  app: sup-production
+  on:
+    repo: artsy/sup
