@@ -105,7 +105,7 @@ module Cost
           res = all_triplets_flat.each_with_index.map { |e, i| e == id ? nil : (i / 3) }
           until res.empty?
             take = res.pop(3)
-            allowed_indexes << take.first if take.none? { |i| i.nil? }
+            allowed_indexes << take.first if take.none?(&:nil?)
           end
           [id, allowed_indexes.uniq]
         end
@@ -131,7 +131,8 @@ module Cost
       m = ttnr.values.max
       # an easy way to find the few hundred triplets that have the most
       # allowances (since array intersection is quite slow)
-      counter, hardest2pair_triplets = 0, {}
+      counter = 0
+      hardest2pair_triplets = {}
       until hardest2pair_triplets.count > 50 || hardest2pair_triplets.count == ttnr.count
         hardest2pair_triplets = Hash[ttnr.select { |_k, v| v >= (m - counter) }]
         counter += 1
@@ -154,7 +155,8 @@ module Cost
         # pick another triplet for the group that does not contain any member_ids
         # that are already in the current group of triplets. This is ensured by
         # intersecting the arrays of allowed indexes in the hash h, with some memoization
-        h, members = @member_id_to_non_membered_triplet_indexes, arr_of_trips.flatten.sort
+        h = @member_id_to_non_membered_triplet_indexes
+        members = arr_of_trips.flatten.sort
         valid_addition_indexes =
           if h[(key = members.to_s)].nil?
             idxs = members.map { |id| h[id] }

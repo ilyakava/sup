@@ -2,12 +2,12 @@ require 'spec_helper'
 
 def make_groups_and_members!(groups, distributions)
   groups.each do |g|
-    Group.create(name: g)
+    Group.create!(name: g)
   end
   Group.all.to_a.each_with_index do |group, idx|
     distributions[idx].times do |mi|
       name = "Member_#{mi + 1}_of_#{group.name}"
-      Member.create(name: name, email: "#{name}@artsymail.com", group_ids: [group.id])
+      Member.create!(name: name, email: "#{name}@artsymail.com", group_ids: [group.id])
     end
   end
 end
@@ -118,18 +118,17 @@ describe 'overall meeting scheduling' do
 
   describe 'a simple example with 3 leftovers' do
     before :each do
-      groups = %w(      A B C      )
+      groups = %w(A B C)
       distributions = [3, 2, 1]
       make_groups_and_members!(groups, distributions)
+      Meeting.schedule_all
     end
 
     it 'creates the right number of meetings' do
-      Meeting.schedule_all
       expect(Meeting.count).to eq(1)
     end
 
     it "doesn't pair those in the same work group" do
-      Meeting.schedule_all
       Meeting.all.each do |meeting|
         expect(meeting.members.map(&:groups).flatten.uniq.count).to eq(3)
       end
@@ -138,7 +137,7 @@ describe 'overall meeting scheduling' do
 
   describe 'a simple example with 1 leftover' do
     before :each do
-      groups = %w(      A B C D E      )
+      groups = %w(A B C D E)
       distributions = [1, 2, 2, 1, 1]
       make_groups_and_members!(groups, distributions)
     end
@@ -183,7 +182,7 @@ describe 'overall meeting scheduling' do
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now
           Meeting.schedule_all
-          expect(Meeting.count > 10).to be_true
+          expect(Meeting.count > 10).to be true
           puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
         end
       end
@@ -208,7 +207,7 @@ describe 'overall meeting scheduling' do
         Timecop.travel(Date.today + (i * 1.week)) do
           start_time = Time.now
           Meeting.schedule_all
-          expect(Meeting.count > 10).to be_true
+          expect(Meeting.count > 10).to be true
           puts "made #{Meeting.count} meetings on round #{i}, taking #{Time.now - start_time} seconds"
         end
       end
@@ -218,7 +217,7 @@ end
 
 describe 'Meeting::choose_date' do
   it 'always returns a date' do
-    expect(Meeting.choose_date([1, 2, 3]).is_a? Date).to be_true
+    expect(Meeting.choose_date([1, 2, 3]).is_a? Date).to be true
   end
 end
 
