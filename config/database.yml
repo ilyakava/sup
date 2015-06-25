@@ -23,6 +23,6 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: sup_test
+  database: suptest
   pool: 5
   password:
