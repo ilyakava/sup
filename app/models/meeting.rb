@@ -106,19 +106,21 @@ class Meeting < ActiveRecord::Base
 
   def self.schedule_all
     # Convergence is much quicker when there is at least 1 left over member
-    ms, best_meetings = Member.active.count
+    ms = Member.active.count
+    best_meetings = nil
     max_target_num_meetings = ms > 15 ? (ms - 1) / 3 : ms / 3
     max_target_num_meetings.downto(1) do |target_num_meetings|
       best_meetings = Meeting.find_best_meeting(target_num_meetings)
       break unless best_meetings.nil?
     end
-    Meeting.multiple_new_from_array(best_meetings).each { |m| m.save! }
+    Meeting.multiple_new_from_array(best_meetings).each(&:save!)
   end
 
   # cost minimization strategy, monte carlo style
   def self.find_best_meeting(target_num_meetings)
     cursor = Cost::TripletGroupGenerator.new.enumerator(target_num_meetings)
-    curr_best_cost, curr_best_meeting_round = Float::INFINITY
+    curr_best_cost = Float::INFINITY
+    curr_best_meeting_round = nil
     trials_since_best_cost_beaten = 0
 
     cursor.each do |meeting_round|
