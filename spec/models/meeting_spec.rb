@@ -20,7 +20,7 @@ describe 'the cost of an individual meeting' do
       make_groups_and_members!(groups, distributions)
       group_member_ids = Group.first.members.pluck(:id)
       invalid_meeting = Meeting.new(member_ids: group_member_ids)
-      invalid_meeting.cost_from_shared_groups.should eq(Float::INFINITY)
+      expect(invalid_meeting.cost_from_shared_groups).to eq(Float::INFINITY)
     end
 
     it 'calculates the right cost for a meeting of exclusive group members' do
@@ -29,7 +29,7 @@ describe 'the cost of an individual meeting' do
       make_groups_and_members!(groups, distributions)
       member_ids = Member.all.pluck(:id)
       meeting = Meeting.new(member_ids: member_ids)
-      meeting.cost_from_shared_groups.should eq(0)
+      expect(meeting.cost_from_shared_groups).to eq(0)
     end
   end
 
@@ -45,7 +45,7 @@ describe 'the cost of an individual meeting' do
       it 'calculates the right cost for a repeated meeting in the same week' do
         Meeting.create(member_ids: @member_ids, meeting_date: Date.yesterday)
         invalid_meeting = Meeting.new(member_ids: @member_ids)
-        invalid_meeting.cost_from_shared_meetings.should eq(Float::INFINITY)
+        expect(invalid_meeting.cost_from_shared_meetings).to eq(Float::INFINITY)
       end
 
       it 'calculates a lower cost for a meeting repeated later' do
@@ -55,8 +55,8 @@ describe 'the cost of an individual meeting' do
           m.update_attributes(meeting_date: Date.today - (2 + i).weeks)
           costs << Meeting.new(member_ids: @member_ids).cost_from_shared_meetings
         end
-        costs.uniq.length.should_not eq(1)
-        costs.min.should eq(costs.pop) until costs.empty?
+        expect(costs.uniq.length).not_to eq(1)
+        expect(costs.min).to eq(costs.pop) until costs.empty?
       end
     end
   end
@@ -231,6 +231,6 @@ describe '#leader' do
   it 'always returns the same leader' do
     m = Meeting.create(member_ids: @member_ids)
     ml1 = m.leader
-    m.leader.should eq(ml1)
+    expect(m.leader).to eq(ml1)
   end
 end
