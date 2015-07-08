@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>S'up</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-	<%= render "application/banner" %>
-
-<%= yield %>
-
-</body>
+  <head>
+    <title>S'up</title>
+    <%= javascript_include_tag "//fast.fonts.net/jsapi/f7f47a40-b25b-44ee-9f9c-cfdfc8bb2741.js" %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+  	<%= render "application/banner" %>
+    <%= yield %>
+  </body>
 </html>
