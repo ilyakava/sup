@@ -63,7 +63,7 @@ This is a rails app that can easily be [deployed with heroku](https://devcenter.
 
 ### Environment variables
 
-This app uses the [figaro](https://github.com/laserlemon/figaro) gem, so it is recommended that you place all your environment variables in a `application.yml` file in the config directory of the app. The **required** environment variables are:
+This app uses the [figaro](https://github.com/laserlemon/figaro) gem, so it is recommended that you place all your environment variables in a `application.yml` file in the `config` directory of the app. The **required** environment variables are:
 
 ```
 COMPANY_NAME: "Initech"
