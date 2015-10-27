@@ -69,6 +69,8 @@ This app uses the [figaro](https://github.com/laserlemon/figaro) gem, so it is r
 COMPANY_NAME: "Initech"
 COMPANY_NAME_POSSESSIVE: "Initech's"
 PRODUCTION_DOMAIN: "guarded-stream-9823.herokuapp.com"
+SUP_USER_NAME: "username"
+SUP_PASSWORD_HASH: "..."
 SMTP_USER_NAME: "ilyakava@initech.com"
 SMTP_PASSWORD: "lumberghrulz"
 SMTP_DOMAIN: "guarded-stream-9823.herokuapp.com
@@ -78,6 +80,17 @@ SMTP_DOMAIN: "guarded-stream-9823.herokuapp.com
 - `PRODUCTION_DOMAIN` should be the web address (without `http` or `www`) for where you are hosting your app.
 - `SMTP_USER_NAME` and `SMTP_PASSWORD` are your email address user name and password. These are used by the app to automatically send emails from the given address.
 - `SMTP_DOMAIN` can be the same as `PRODUCTION_DOMAIN`
+
+You should put the app under SSL and restrict its access with a username/password.
+
+- `SUP_USERNAME`: the username for a shared login
+- `SUP_PASSWORD_HASH`: generate as follows:
+
+```ruby
+require 'bcrypt'
+BCrypt::Password.create('password')
+ => "$2a$10$yKF3BYd1sbZNvandxGJg4.EsQcYd41UP1FJrs6PwrcA6gJ3rQIA8u"
+```
 
 An optional but **recommended** environment variable is:
 
@@ -136,5 +149,5 @@ Run `rake fspec` to exclude the slow specs that check the convergence of the pai
 ## License
 
 (c) Artsy, 2015 + Ilya Kavalerov
- 
+
 MIT
