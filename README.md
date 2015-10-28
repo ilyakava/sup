@@ -83,7 +83,7 @@ SMTP_DOMAIN: "guarded-stream-9823.herokuapp.com
 
 You should put the app under SSL and restrict its access with a username/password.
 
-- `SUP_USERNAME`: the username for a shared login
+- `SUP_USER_NAME`: the username for a shared login
 - `SUP_PASSWORD_HASH`: generate as follows:
 
 ```ruby
