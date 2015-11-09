@@ -1,7 +1,4 @@
 class Member < ActiveRecord::Base
-
-  before_create :confirmation_token
-
   MAX_GROUPS = 5
 
   has_many(
