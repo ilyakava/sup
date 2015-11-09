@@ -30,6 +30,7 @@ class MembersController < ApplicationController
 
   def update
     @member = Member.find(params[:id])
+    params[:member][:email] = @member.email if @member.hide_email.eql?params[:member][:email]
     @member.update_attributes(params[:member])
     redirect_to action: :index
   end
