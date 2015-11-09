@@ -13,28 +13,14 @@ class MembersController < ApplicationController
     respond_to do |format|
       if @member.save
         # Tell the UserMailer to send a welcome Email after save
-        MemberMailer.registration_confirmation(@member).deliver
+        MemberMailer.welcome_email(@member).deliver
 
-        format.html { redirect_to(action: :index, notice: 'Member was successfully created.Please verify your email address.') }
+        format.html { redirect_to(action: :index, notice: 'Member was successfully created.') }
         format.json { render json: @member, status: :created, location: @member }
       else
         format.html { render action: 'new' }
         format.json { render json: @member.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def confirm_email
-    @member = Member.find_by_confirm_token(params[:id])
-    if @member
-      @member.email_activate
-      MemberMailer.welcome_email(@member).deliver
-      flash[:success] = "Welcome to the Sample App! Your email has been confirmed.
-      Please sign in to continue."
-      redirect_to action: :index
-    else
-      flash[:error] = "Sorry. User does not exist"
-      redirect_to action: :index
     end
   end
 
