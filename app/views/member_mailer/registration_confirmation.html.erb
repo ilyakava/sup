@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type="text/css">
+      body#welcome h1, body#meeting h1 {
+        font-family: 'times new roman', serif;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 20px 0px; }
+      body#welcome p {
+        margin: 15px 0px; }
+    </style>
+  </head>
+  <body id="welcome">
+    <h1>Welcome to S'UP at <%= ENV['COMPANY_NAME'] %>, <%= @member.name %></h1>
+    <p>
+      Please verify your email address by clicking the url mentioned below:<br>
+      <%= verify_email_member_url(@member.email_confirmation_token) %>
+    </p>
+  </body>
+</html>

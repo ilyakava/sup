@@ -1,4 +1,6 @@
 class Member < ActiveRecord::Base
+  before_create :ensure_email_confirmation_token
+
   MAX_GROUPS = 5
 
   has_many(
@@ -50,6 +52,19 @@ class Member < ActiveRecord::Base
 
   def self.active
     Member.where(skip_meetings: false)
+  end
+
+  def activate!
+    self.email_confirmed = true
+    self.email_confirmation_token = nil
+    save!
+  end
+
+  private
+
+  def ensure_email_confirmation_token
+    return unless email_confirmation_token.blank?
+    self.email_confirmation_token = SecureRandom.urlsafe_base64.to_s
   end
 end
 #--
