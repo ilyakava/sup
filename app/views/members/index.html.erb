@@ -5,6 +5,6 @@
 <div class="member-list">
   <% @members.each do |member| %>
 	<% status = (member.skip_meetings ? 'inactive' : 'active') %>
-    <%= link_to member.email, { action: "edit", id: member }, class: "member-list-item #{status}" %>
+   		<%= link_to member.name, { action: "edit", id: member }, class: "member-list-item #{status}" if member.email_confirmed%>
   <% end %>
 </div>

@@ -1,4 +1,6 @@
 class MembersController < ApplicationController
+  before_filter :fetch_member, :check_email_confirmed, only: [:edit, :update, :destroy]
+
   def index
     @members = Member.all
   end
@@ -13,9 +15,9 @@ class MembersController < ApplicationController
     respond_to do |format|
       if @member.save
         # Tell the UserMailer to send a welcome Email after save
-        MemberMailer.welcome_email(@member).deliver
+        MemberMailer.registration_confirmation(@member).deliver_now
 
-        format.html { redirect_to(action: :index, notice: 'Member was successfully created.') }
+        format.html { redirect_to(action: :index, notice: 'Member was successfully created. Please verify your email address.') }
         format.json { render json: @member, status: :created, location: @member }
       else
         format.html { render action: 'new' }
@@ -24,18 +26,38 @@ class MembersController < ApplicationController
     end
   end
 
-  def edit
+  def verify_email
+    @member = Member.find_by_email_confirmation_token(params[:id])
+    if @member
+      @member.activate!
+      MemberMailer.welcome_email(@member).deliver_now
+      flash[:success] = "Welcome to the S'Up! Your email has been confirmed."
+      redirect_to action: :index
+    else
+      flash[:error] = 'Invalid token'
+      redirect_to action: :index
+    end
+  end
+
+  def fetch_member
     @member = Member.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    not_found
+  end
+
+  def not_found
+    fail ActionController::RoutingError, 'Mr. Holmes has been notified about the missing member'
+  end
+
+  def edit
   end
 
   def update
-    @member = Member.find(params[:id])
     @member.update_attributes(params[:member])
     redirect_to action: :index
   end
 
   def destroy
-    @member = Member.find(params[:id])
     @member.destroy!
     redirect_to action: :index
   end
@@ -60,6 +82,10 @@ class MembersController < ApplicationController
     end
     @node_data_str = node_data.to_json.html_safe
     @link_data_str = edges.to_json.html_safe
+  end
+
+  def check_email_confirmed
+    redirect_to action: :index unless @member.email_confirmed
   end
 
   private

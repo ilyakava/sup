@@ -24,7 +24,7 @@ module Cost
 
     def triplets_to_num_restrictions
       v = valid_triplets_unsorted
-      Hash[v.map { |trip| [trip, trip.map { |m_id| @members_to_groups[m_id] + @members_to_last_week_meeting_members[m_id]  }.flatten.uniq.length] }]
+      Hash[v.map { |trip| [trip, trip.map { |m_id| @members_to_groups[m_id] + @members_to_last_week_meeting_members[m_id] }.flatten.uniq.length] }]
     end
 
     def valid_triplets_unsorted

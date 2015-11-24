@@ -15,7 +15,7 @@ end
 describe 'the cost of an individual meeting' do
   describe '#cost_from_shared_groups' do
     it 'calculates the right cost for a meeting of group members' do
-      groups = %w(      A      )
+      groups = %w( A      )
       distributions = [3]
       make_groups_and_members!(groups, distributions)
       group_member_ids = Group.first.members.pluck(:id)
@@ -24,7 +24,7 @@ describe 'the cost of an individual meeting' do
     end
 
     it 'calculates the right cost for a meeting of exclusive group members' do
-      groups = %w(      A B C      )
+      groups = %w( A B C      )
       distributions = [1, 1, 1]
       make_groups_and_members!(groups, distributions)
       member_ids = Member.all.pluck(:id)
@@ -65,7 +65,7 @@ end
 describe 'overall meeting scheduling' do
   describe 'members in exclusive groups' do
     before :each do
-      groups = %w(      A B C      )
+      groups = %w( A B C      )
       distributions = [1, 1, 1]
       make_groups_and_members!(groups, distributions)
     end
@@ -78,7 +78,7 @@ describe 'overall meeting scheduling' do
   end
   describe 'a perfectly symmetrical example' do
     before :each do
-      groups = %w(      A B C      )
+      groups = %w( A B C      )
       distributions = [3, 3, 3]
       make_groups_and_members!(groups, distributions)
     end
@@ -98,7 +98,7 @@ describe 'overall meeting scheduling' do
 
   describe 'a very symmetrical example' do
     before :each do
-      groups = %w(      A B C D      )
+      groups = %w( A B C D      )
       distributions = [2, 2, 1, 1]
       make_groups_and_members!(groups, distributions)
     end
