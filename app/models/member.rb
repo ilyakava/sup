@@ -1,5 +1,6 @@
 class Member < ActiveRecord::Base
   before_create :ensure_email_confirmation_token
+  before_validation :downcase_email
 
   MAX_GROUPS = 5
 
@@ -65,6 +66,11 @@ class Member < ActiveRecord::Base
   def ensure_email_confirmation_token
     return unless email_confirmation_token.blank?
     self.email_confirmation_token = SecureRandom.urlsafe_base64.to_s
+  end
+
+  def downcase_email
+    return unless email.present?
+    email.downcase!
   end
 end
 #--
