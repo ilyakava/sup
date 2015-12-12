@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/ilyakava/sup.svg?branch=generalize)](https://travis-ci.org/ilyakava/sup)
 [![Stories in Ready](https://badge.waffle.io/ilyakava/sup.png?label=ready&title=Ready)](https://waffle.io/ilyakava/sup)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## About
 
