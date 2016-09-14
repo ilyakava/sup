@@ -1,0 +1,31 @@
+{
+  "name": "SUP",
+  "description": "This is a web app for facilitating S'Ups (quick meetings) between the employees of a company.",
+  "repository": "https://github.com/ilyakava/sup",
+  "keywords": ["sup, S'Up"],
+  "scripts": {
+    "postdeploy":"rake db:setup"
+  },
+  "env": {
+    "COMPANY_NAME": {
+      "description": "Name of Company",
+      "value": "Artsy"
+    },
+    "COMPANY_NAME_POSSESSIVE": {
+    	"value": "Artsy's"
+    },
+    "PRODUCTION_DOMAIN": {
+    	"description": "(Recommended) Give a custom name to your Heroku app and add it here. Eg: 'example-app.herokuapp.com'",
+    	"value": "example-app.herokuapp.com"
+    },
+    "SMTP_USER_NAME": {
+    	"description": "Username of your email account"
+    },
+    "SMTP_PASSWORD": {
+    	"description": "Respective password"
+    },
+    "SMTP_DOMAIN": {
+    	"value": "example-app.herokuapp.com"
+    }
+  }
+}
